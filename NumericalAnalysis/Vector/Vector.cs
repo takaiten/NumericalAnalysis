@@ -8,16 +8,6 @@ namespace ComMethods
     }
 
     class Vector : IVector
-    {using System;
-
-namespace ComMethods
-{
-    public interface IVector
-    {
-        int Size { set; get; }
-    }
-
-    class Vector : IVector
     {
         public int Size { set; get; }
         public double[] Elem { set; get; }
