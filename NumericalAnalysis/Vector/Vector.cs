@@ -8,6 +8,16 @@ namespace ComMethods
     }
 
     class Vector : IVector
+    {using System;
+
+namespace ComMethods
+{
+    public interface IVector
+    {
+        int Size { set; get; }
+    }
+
+    class Vector : IVector
     {
         public int Size { set; get; }
         public double[] Elem { set; get; }
@@ -65,6 +75,31 @@ namespace ComMethods
         public static bool operator !=(Vector a, Vector b)
         {
             return !(a == b);
+        }
+
+        public Matrix ColumnMult_ByRow(Vector r)
+        {
+            if (Size != r.Size)
+                throw new Exception("VECTOR*VECTOR: Vectors dimensions doesn't match");
+
+            Matrix res = new Matrix(Size, Size);
+            for (int i = 0; i < Size; i++)
+                for (int j = 0; j < Size; j++)
+                    res.Elem[i, j] = Elem[i] * r.Elem[j];
+
+            return res;
+        }
+
+        public double RowMult_ByColumn(Vector c)
+        {
+            if (Size != c.Size)
+                throw new Exception("VECTOR*VECTOR: Vectors dimensions doesn't match");
+
+            double res = new double();
+            for (int i = 0; i < Size; i++)
+                res += Elem[i] * c.Elem[i];
+
+            return res;
         }
     }
 }
