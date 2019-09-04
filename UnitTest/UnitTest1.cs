@@ -73,6 +73,44 @@ namespace ComMethods.Tests
             // Assert
             Assert.That(a * b == trueRes);
         }
+
+        [TestCase]
+        public void When_ColumnMult_ByRow()
+        {
+            // Arrange
+            Vector a = new Vector(3);
+            Vector b = new Vector(3);
+            Matrix trueRes = new Matrix(3, 3);
+            for (int i = 0; i < 3; i++)
+            {
+                a.Elem[i] = 1;
+                b.Elem[i] = 3;
+            }
+            // Act 
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    trueRes.Elem[i, j] = 3;
+
+            // Assert
+            Assert.That(a.ColumnMult_ByRow(b) == trueRes);
+        }
+
+        [TestCase]
+        public void When_RowMult_ByColumn()
+        {
+            //Arrange
+            Vector a = new Vector(3);
+            Vector b = new Vector(3);
+            double res = 9;
+            for (int i = 0; i < 3; i++)
+            {
+                a.Elem[i] = 1;
+                b.Elem[i] = 3;
+            }
+
+            // Assert
+            Assert.That(a.RowMult_ByColumn(b) == res);
+        }
     }
 
     [TestFixture]
