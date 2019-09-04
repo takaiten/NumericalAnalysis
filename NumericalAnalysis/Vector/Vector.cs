@@ -21,16 +21,14 @@ namespace ComMethods
             Size = size;
             Elem = new double[size];
         }
-        
+
         // Methods
         public void Print()
         {
-            foreach (var e in Elem)
-            {
+            foreach (var e in Elem) 
                 Console.WriteLine(e);
-            }
         }
-        
+
         // Operator overloads
         public static Vector operator *(Vector v, double x) // Mult vector by a scalar
         {
@@ -46,26 +44,24 @@ namespace ComMethods
                 throw new Exception("VECTOR*VECTOR: Vectors dimensions doesn't match");
 
             double res = 0.0f;
-            for (int i = 0; i < a.Size; i++)
-            {
+            for (int i = 0; i < a.Size; i++) 
                 res += a.Elem[i] * b.Elem[i];
-            }
 
             return res;
         }
 
         public static bool operator ==(Vector a, Vector b)
         {
-            if (a.Size != b.Size) 
+            if (a.Size != b.Size)
                 return false;
 
             bool isEqual = true;
-            for (int i = 0; i < a.Size; i++) 
+            for (int i = 0; i < a.Size; i++)
                 isEqual &= Math.Abs(a.Elem[i] - b.Elem[i]) < 1e-9;
-            
+
             return isEqual;
         }
-        
+
         public static bool operator !=(Vector a, Vector b)
         {
             return !(a == b);
