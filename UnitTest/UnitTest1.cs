@@ -32,7 +32,7 @@ namespace ComMethods.Tests
             // Act 
             for (int i = 0; i < 3; i++)
                 b.Elem[i] = 1;
-            
+
             // Assert
             Assert.That(a != b);
         }
@@ -43,39 +43,21 @@ namespace ComMethods.Tests
             // Arrange
             Vector v = new Vector(3);
             Vector trueRes = new Vector(3);
-            
+
             for (int i = 0; i < 3; i++)
             {
                 v.Elem[i] = 1;
                 trueRes.Elem[i] = 3;
             }
-            
+
             // Act 
             v *= 3;
             // Assert
             Assert.That(v == trueRes);
         }
 
-        [TestCase(Author = "Oleg")]
-        public void When_CalcDotProduct_OfTwoVectors()
-        {
-            // Arrange
-            Vector a = new Vector(3);
-            Vector b = new Vector(3);
-            for (int i = 0; i < 3; i++)
-            {
-                a.Elem[i] = 1;
-                b.Elem[i] = 5;
-            }
-
-            // Act 
-            double trueRes = 1 * 5 * 3;
-            // Assert
-            Assert.That(a * b == trueRes);
-        }
-        
         [TestCase(Author = "Marina")]
-        public void When_ColumnMult_ByRow()
+        public void When_VectorColumnMult_ByRow()
         {
             // Arrange
             Vector a = new Vector(3);
@@ -86,17 +68,17 @@ namespace ComMethods.Tests
                 a.Elem[i] = 1;
                 b.Elem[i] = 3;
             }
-            // Act 
+
             for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 trueRes.Elem[i, j] = 3;
 
-            // Assert
+            // Act and Assert
             Assert.That(a.MultColumnByRow(b) == trueRes);
         }
 
         [TestCase(Author = "Marina")]
-        public void When_RowMult_ByColumn()
+        public void When_VectorRowMult_ByColumn()
         {
             //Arrange
             Vector a = new Vector(3);
@@ -108,8 +90,41 @@ namespace ComMethods.Tests
                 b.Elem[i] = 3;
             }
 
-            // Assert
+            // Act and Assert
             Assert.That(a.MultRowByColumn(b) == res);
+        }
+
+        [TestCase(Author = "Oleg")]
+        public void When_CalcDotProduct_OfTwoVectors()
+        {
+            // Arrange
+            double trueRes = 1 * 5 * 3;
+            Vector a = new Vector(3);
+            Vector b = new Vector(3);
+            for (int i = 0; i < 3; i++)
+            {
+                a.Elem[i] = 1;
+                b.Elem[i] = 5;
+            }
+
+            // Act and Assert
+            Assert.That(a * b == trueRes);
+        }
+
+        [TestCase(Author = "Artem")]
+        public void When_Copy_Vector_to_Vector()
+        {
+            // Arrange
+            Vector a = new Vector(3);
+            Vector b = new Vector(3);
+            for (int i = 0; i < 3; i++)
+                b.Elem[i] = 2;
+
+            // Act 
+            a.Copy(b);
+
+            // Assert
+            Assert.That(a == b);
         }
     }
 
@@ -162,11 +177,10 @@ namespace ComMethods.Tests
                     A.Elem[j, i] = 1;
             }
 
-            // Act 
             for (int i = 0; i < 2; i++)
                 trueRes.Elem[i] = 9;
 
-            // Assert
+            // Act and Assert
             Assert.That(A * v == trueRes);
         }
 
@@ -185,12 +199,11 @@ namespace ComMethods.Tests
                     B.Elem[j, i] = 3;
                 }
 
-            // Act 
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 2; j++)
                     trueRes.Elem[i, j] = 9;
 
-            // Assert
+            // Act and Assert
             Assert.That(A * B == trueRes);
         }
     }

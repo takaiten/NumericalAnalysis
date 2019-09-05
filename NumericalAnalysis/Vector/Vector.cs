@@ -13,8 +13,7 @@ namespace ComMethods
         public double[] Elem { set; get; }
 
         public Vector()
-        {
-        }
+        {}
 
         public Vector(int size)
         {
@@ -25,10 +24,10 @@ namespace ComMethods
         // Methods
         public void Print()
         {
-            foreach (var e in Elem) 
+            foreach (var e in Elem)
                 Console.WriteLine(e);
         }
-        
+
         public Matrix MultColumnByRow(Vector r)
         {
             if (Size != r.Size)
@@ -54,6 +53,15 @@ namespace ComMethods
             return res;
         }
 
+        public void Copy(Vector v2)
+        {
+            if (Size != v2.Size)
+                throw new Exception("Copy: Vectors dimensions doesn't match");
+
+            for (int i = 0; i < Size; i++)
+                Elem[i] = v2.Elem[i];
+        }
+
         // Operator overloads
         public static Vector operator *(Vector v, double x) // Mult vector by a scalar
         {
@@ -69,7 +77,7 @@ namespace ComMethods
                 throw new Exception("VECTOR*VECTOR: Vectors dimensions doesn't match");
 
             double res = 0.0f;
-            for (int i = 0; i < a.Size; i++) 
+            for (int i = 0; i < a.Size; i++)
                 res += a.Elem[i] * b.Elem[i];
 
             return res;
