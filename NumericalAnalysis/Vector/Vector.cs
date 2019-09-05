@@ -13,8 +13,7 @@ namespace ComMethods
         public double[] Elem { set; get; }
 
         public Vector()
-        {
-        }
+        {}
 
         public Vector(int size)
         {
@@ -90,6 +89,17 @@ namespace ComMethods
         public static bool operator !=(Vector a, Vector b)
         {
             return !(a == b);
+        }
+
+        
+
+        public void Copy(Vector v2)
+        {
+            if (Size != v2.Size)
+                throw new Exception("Copy: Vectors dimensions doesn't match");
+
+            for (int i = 0; i < Size; i++)
+                Elem[i] = v2.Elem[i];
         }
     }
 }

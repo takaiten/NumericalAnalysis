@@ -23,6 +23,21 @@ namespace ComMethods.Tests
             Assert.That(a == b);
         }
 
+        [TestCase]
+        public void When_Copy_Vector_to_Vector()
+        {
+            // Arrange
+            Vector a = new Vector(3);
+            Vector b = new Vector(3);
+            // Act 
+            for (int i = 0; i < 3; i++)
+                b.Elem[i] = 2;
+            a.Copy(b);
+
+            // Assert
+            Assert.That(a == b);
+        }
+
         [TestCase(Author = "Oleg")]
         public void When_Vectors_NotEqual()
         {
