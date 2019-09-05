@@ -6,12 +6,12 @@ addons:
     snaps:
         - name: dotnet-sdk
           classic: true
-          channel: latest/beta
+          channel: latest/stable
 script:
     - sudo snap alias dotnet-sdk.dotnet dotnet
     - dotnet --version
     - dotnet restore
-    - dotnet build 
+    - dotnet build /p:Configuration=Release NumericalAnalysis.sln
     - dotnet test UnitTest/UnitTest.csproj 
 global:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
