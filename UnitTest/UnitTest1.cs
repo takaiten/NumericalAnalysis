@@ -23,7 +23,7 @@ namespace ComMethods.Tests
             Assert.That(a == b);
         }
 
-        [TestCase]
+        [TestCase(Author = "Artem")]
         public void When_Copy_Vector_to_Vector()
         {
             // Arrange
