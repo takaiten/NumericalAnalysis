@@ -6,7 +6,7 @@ namespace ComMethods.Tests
     [TestFixture]
     public class VectorTests
     {
-        [TestCase]
+        [TestCase(Author = "Oleg")]
         public void When_Vectors_AreEqual()
         {
             // Arrange
@@ -23,7 +23,7 @@ namespace ComMethods.Tests
             Assert.That(a == b);
         }
 
-        [TestCase]
+        [TestCase(Author = "Oleg")]
         public void When_Vectors_NotEqual()
         {
             // Arrange
@@ -37,7 +37,7 @@ namespace ComMethods.Tests
             Assert.That(a != b);
         }
 
-        [TestCase]
+        [TestCase(Author = "Oleg")]
         public void When_VectorMult_ByScalar()
         {
             // Arrange
@@ -56,7 +56,7 @@ namespace ComMethods.Tests
             Assert.That(v == trueRes);
         }
 
-        [TestCase]
+        [TestCase(Author = "Oleg")]
         public void When_CalcDotProduct_OfTwoVectors()
         {
             // Arrange
@@ -73,8 +73,8 @@ namespace ComMethods.Tests
             // Assert
             Assert.That(a * b == trueRes);
         }
-
-        [TestCase]
+        
+        [TestCase(Author = "Marina")]
         public void When_ColumnMult_ByRow()
         {
             // Arrange
@@ -88,14 +88,14 @@ namespace ComMethods.Tests
             }
             // Act 
             for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
-                    trueRes.Elem[i, j] = 3;
+            for (int j = 0; j < 3; j++)
+                trueRes.Elem[i, j] = 3;
 
             // Assert
-            Assert.That(a.ColumnMult_ByRow(b) == trueRes);
+            Assert.That(a.MultColumnByRow(b) == trueRes);
         }
 
-        [TestCase]
+        [TestCase(Author = "Marina")]
         public void When_RowMult_ByColumn()
         {
             //Arrange
@@ -109,14 +109,14 @@ namespace ComMethods.Tests
             }
 
             // Assert
-            Assert.That(a.RowMult_ByColumn(b) == res);
+            Assert.That(a.MultRowByColumn(b) == res);
         }
     }
 
     [TestFixture]
     public class MatrixTests
     {
-        [TestCase]
+        [TestCase(Author = "Marina")]
         public void When_Matrices_AreEqual()
         {
             // Arrange
@@ -133,7 +133,7 @@ namespace ComMethods.Tests
             Assert.That(A == B);
         }
 
-        [TestCase]
+        [TestCase(Author = "Marina")]
         public void When_Matrices_NotEqual()
         {
             // Arrange
@@ -147,7 +147,7 @@ namespace ComMethods.Tests
             Assert.That(A != B);
         }
 
-        [TestCase]
+        [TestCase(Author = "Marina")]
         public void When_MatrixMult_ByVector()
         {
             // Arrange
@@ -170,7 +170,7 @@ namespace ComMethods.Tests
             Assert.That(A * v == trueRes);
         }
 
-        [TestCase]
+        [TestCase(Author = "Marina")]
         public void When_MatricesMult()
         {
             // Arrange
