@@ -206,5 +206,96 @@ namespace ComMethods.Tests
             // Act and Assert
             Assert.That(A * B == trueRes);
         }
+
+        [TestCase(Author = "Marina")]
+        public void When_RowMult_ByConst()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            Matrix B = new Matrix(3, 3);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    A.Elem[j, i] = 1;
+                    if (j != 1)
+                        B.Elem[j, i] = 1;
+                    else
+                        B.Elem[j, i] = 3;
+                }
+
+            // Act 
+            A.MultRowByConst(1, 3);
+
+            // Assert
+            Assert.That(A == B);
+        }
+
+        [TestCase(Author = "Marina")]
+        public void When_ColumnMult_ByConst()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            Matrix B = new Matrix(3, 3);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    A.Elem[i, j] = 1;
+                    if (j != 1)
+                        B.Elem[i, j] = 1;
+                    else
+                        B.Elem[i, j] = 3;
+                }
+
+            // Act 
+            A.MultColumnByConst(1, 3);
+
+            // Assert
+            Assert.That(A == B);
+        }
+
+        [TestCase(Author = "Marina")]
+        public void When_Rows_Switched()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            Matrix B = new Matrix(3, 3);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                {
+                    A.Elem[j, i] = 1;
+                    B.Elem[j, i] = 1;
+                }
+
+            B.MultRowByConst(2, 3);
+            A.MultRowByConst(0, 3);
+
+            // Act 
+            A.SwitchRows(0, 2);
+
+            // Assert
+            Assert.That(A == B);
+        }
+
+        [TestCase(Author = "Marina")]
+        public void When_FindRow_of_MaxElem()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    A.Elem[i, j] = 1;
+
+            A.Elem[2, 1] = 10;
+
+            // Act 
+            int rowNum = A.RowNum_of_MaxColumnElem(1);
+
+            // Assert
+            Assert.That(rowNum == 2);
+        }
     }
 }

@@ -41,6 +41,46 @@ namespace ComMethods
                 Console.Write('\n');
             }
         }
+
+        public void MultRowByConst(int row, double c)
+        {
+            for (int i = 0; i < Column; i++)
+                Elem[row, i] *= c;
+        }
+
+        public void MultColumnByConst(int column, double c)
+        {
+            for (int i = 0; i < Row; i++)
+                Elem[i, column] *= c;
+        }
+
+        public int RowNum_of_MaxColumnElem(int column)
+        {
+            if (column >= Column || column < 0)
+                throw new Exception("MATRIX: Wrong number of column");
+
+            double max = 0;
+            int rowNum = 0;
+
+            for (int i = 0; i < Row; i++)
+                if (Elem[i, column] > max)
+                    rowNum = i;
+
+            return rowNum;
+        }
+
+        public void SwitchRows(int r1, int r2)
+        {
+            if (r1 >= Row || r1 < 0 || r2 >= Row || r2 < 0)
+                throw new Exception("MATRIX: Wrong number of row");
+
+            for (int i = 0; i < Column; i++)
+            {
+                double tmp = Elem[r1, i];
+                Elem[r1, i] = Elem[r2, i];
+                Elem[r2, i] = tmp;
+            }
+        }
         
         // Operator overloads
         public static Vector operator *(Matrix M, Vector V) // Mult matrix by a vector 
