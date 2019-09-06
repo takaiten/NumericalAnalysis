@@ -279,9 +279,8 @@ namespace ComMethods.Tests
             Assert.That(A == B);
         }
 
-        [TestCase(Author = "Oleg")]
-        [TestCase(3)]
-        [TestCase(10)]
+        [TestCase(3, Author = "Oleg")]
+        [TestCase(10, Author = "Oleg")]
         public void When_FindRow_of_MaxElem(int size)
         {
             // Arrange
