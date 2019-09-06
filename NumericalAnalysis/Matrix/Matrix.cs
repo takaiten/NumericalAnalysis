@@ -54,17 +54,20 @@ namespace ComMethods
                 Elem[i, column] *= c;
         }
 
-        public int RowNum_of_MaxColumnElem(int column)
+        public int RowNumOfMaxColumnElem(int column)
         {
             if (column >= Column || column < 0)
-                throw new Exception("MATRIX: Wrong number of column");
+                throw new Exception("MATRIX: Wrong column number");
 
-            double max = 0;
+            double max = 0.0f;
             int rowNum = 0;
 
             for (int i = 0; i < Row; i++)
                 if (Elem[i, column] > max)
+                {
                     rowNum = i;
+                    max = Elem[i, column];
+                }
 
             return rowNum;
         }

@@ -279,20 +279,24 @@ namespace ComMethods.Tests
             Assert.That(A == B);
         }
 
-        [TestCase(Author = "Marina")]
-        public void When_FindRow_of_MaxElem()
+        [TestCase(Author = "Oleg")]
+        [TestCase(3)]
+        [TestCase(10)]
+        public void When_FindRow_of_MaxElem(int size)
         {
             // Arrange
-            Matrix A = new Matrix(3, 3);
+            Matrix A = new Matrix(size, size);
 
-            for (int i = 0; i < 3; i++)
-                for (int j = 0; j < 3; j++)
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
                     A.Elem[i, j] = 1;
 
-            A.Elem[2, 1] = 10;
+            A.Elem[0, size - 1] = 10;
+            A.Elem[1, size - 1] = 15;
+            A.Elem[2, size - 1] = 16;
 
             // Act 
-            int rowNum = A.RowNum_of_MaxColumnElem(1);
+            int rowNum = A.RowNumOfMaxColumnElem(size - 1);
 
             // Assert
             Assert.That(rowNum == 2);
