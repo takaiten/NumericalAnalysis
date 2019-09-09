@@ -84,7 +84,39 @@ namespace ComMethods
                 Elem[r2, i] = tmp;
             }
         }
-        
+
+        //public void UTTransformation()
+        //{
+        //    if (Column != Row)
+        //        throw new Exception("GAUSS: Matrix isn't square");
+
+        //    for (int k = 0; k < Row - 1; k++)
+        //    {
+        //        double max = 0.0f;
+        //        int maxNum = 0;
+
+        //        for (int i = k; i < Row; i++)
+        //            if (Math.Abs(Elem[i, k]) > max)
+        //            {
+        //                max = Math.Abs(Elem[i, k]);
+        //                maxNum = i;
+        //            }
+
+        //        if (max == 0.0f)
+        //            throw new Exception("GAUSS: Matrix is singular");
+
+        //        SwitchRows(maxNum, k);
+
+        //        for (int i = k + 1; i < Row; i++)
+        //            for (int j = Column - 1; j >= 0; j--)
+        //                if (Elem[i, k] != 0)
+        //                {
+        //                    Elem[i, j] *= Elem[k, k] / Elem[i, k];
+        //                    Elem[i, j] -= Elem[k, j];
+        //                }
+        //    }
+        //}
+
         // Operator overloads
         public static Vector operator *(Matrix M, Vector V) // Mult matrix by a vector 
         {

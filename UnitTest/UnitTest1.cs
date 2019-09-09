@@ -300,5 +300,68 @@ namespace ComMethods.Tests
             // Assert
             Assert.That(rowNum == 2);
         }
+
+        //[TestCase(Author = "Marina")]
+        //public void When_MatrixTransformedTo_UT()
+        //{
+        //    Matrix A = new Matrix(3, 3);
+        //    Matrix B = new Matrix(3, 3);
+
+        //    A.Elem[0, 0] = 3;   A.Elem[0, 2] = 2;
+        //    A.Elem[1, 1] = 1;   A.Elem[1, 2] = 4;
+        //    A.Elem[2, 0] = 3;   A.Elem[2, 1] = 2;
+
+        //    B.Elem[0, 0] = 3;   B.Elem[0, 2] = 2;
+        //    B.Elem[1, 1] = 2;   B.Elem[1, 2] = -2;
+        //    B.Elem[2, 2] = 10;
+
+        //    A.UTTransformation();
+        //    Assert.That(A == B);
+        //}
+    }
+
+    [TestFixture]
+    public class GaussTests
+    {
+        [TestCase(Author = "Marina")]
+        public void When_MatrixTransformedTo_UT()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            Matrix B = new Matrix(3, 3);
+
+            A.Elem[0, 0] = 6;   A.Elem[0, 1] = 2;   A.Elem[0, 2] = 3;
+            A.Elem[1, 0] = 2;   A.Elem[1, 1] = 1;   A.Elem[1, 2] = 8;
+            A.Elem[2, 0] = 3;   A.Elem[2, 2] = 5;
+
+            B.Elem[0, 0] = 6;   B.Elem[0, 1] = 2;   B.Elem[0, 2] = 3;
+            B.Elem[1, 1] = -2;  B.Elem[1, 2] = 7;
+            B.Elem[2, 2] = -49;
+
+            Gauss Test = new Gauss(A);
+
+            // Act 
+            Test.UTTransformation();
+
+            // Assert
+            Assert.That(Test.U == B);
+        }
+
+        [TestCase(Author = "Marina")]
+        public void When_MatrixTransformedTo_LT()
+        {
+            Matrix A = new Matrix(3, 3);
+
+            A.Elem[0, 0] = 6; A.Elem[0, 1] = 2; A.Elem[0, 2] = 3;
+            A.Elem[1, 0] = 2; A.Elem[1, 1] = 1; A.Elem[1, 2] = 8;
+            A.Elem[2, 0] = 3; A.Elem[2, 2] = 5;
+
+            Gauss Test = new Gauss(A);
+
+            Test.UTTransformation();
+            Test.LTTransformation();
+
+            Assert.That(Test.L * Test.U == Test.SLE);
+        }
     }
 }

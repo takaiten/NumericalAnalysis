@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -18,6 +18,9 @@
       </Compile>
       <Compile Include="..\NumericalAnalysis\Vector\Vector.cs">
         <Link>Vector\Vector.cs</Link>
+      </Compile>
+      <Compile Include="..\NumericalAnalysis\Gauss\Gauss.cs">
+        <Link>Gauss\Gauss.cs</Link>
       </Compile>
     </ItemGroup>
 
