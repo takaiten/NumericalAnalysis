@@ -5,14 +5,14 @@ namespace ComMethods
 {
     public interface IMatrix
     {
-        int Row { set; get; }
-        int Column { set; get; }
+        int Row { get; }
+        int Column { get; }
     }
 
     class Matrix : IMatrix
     {
-        public int Row { set; get; }
-        public int Column { set; get; }
+        public int Row { get; }
+        public int Column { get; }
         public double[,] Elem { set; get; }
 
         public Matrix()
@@ -123,7 +123,7 @@ namespace ComMethods
             bool isEqual = true;
             for (int i = 0; i < A.Row; i++)
                 for (int j = 0; j < A.Column; j++)
-                    isEqual &= Math.Abs(A.Elem[i, j] - B.Elem[i, j]) < 1e-9;
+                    isEqual &= Math.Abs(A.Elem[i, j] - B.Elem[i, j]) < CONST.EPS;
 
             return isEqual;
         }

@@ -319,14 +319,12 @@ namespace ComMethods.Tests
             B.Elem[0, 0] = 6;   B.Elem[0, 1] = 2;   B.Elem[0, 2] = 3;
             B.Elem[1, 1] = -2;  B.Elem[1, 2] = 7;
             B.Elem[2, 2] = -49;
-
-            Gauss Test = new Gauss(A);
-
+            
             // Act 
-            Test.UTTransformation();
-
+            Gauss.DirectWay(A);
+            
             // Assert
-            Assert.That(Test.U == B);
+            Assert.That(A == B);
         }
 
         [TestCase(Author = "Marina")]
@@ -335,21 +333,20 @@ namespace ComMethods.Tests
             // Arrange
 
             Matrix A = new Matrix(3, 3);
+            Matrix L = new Matrix(3, 3);
+            Matrix U = A;
 
             A.Elem[0, 0] = 6; A.Elem[0, 1] = 2; A.Elem[0, 2] = 3;
             A.Elem[1, 0] = 2; A.Elem[1, 1] = 1; A.Elem[1, 2] = 8;
             A.Elem[2, 0] = 3; A.Elem[2, 2] = 5;
-
-            Gauss Test = new Gauss(A);
-
+            
             // Act
-
-            Test.UTTransformation();
-            Test.LTTransformation();
+            Gauss.DirectWay(U);
+            LUDecomposition.Transform(A, L, U);
 
             // Assert
 
-            Assert.That(Test.L * Test.U == Test.SLE);
+            Assert.That(L * U == A);
         }
     }
 }

@@ -4,12 +4,12 @@ namespace ComMethods
 {
     public interface IVector
     {
-        int Size { set; get; }
+        int Size { get; }
     }
 
     class Vector : IVector
     {
-        public int Size { set; get; }
+        public int Size { get; }
         public double[] Elem { set; get; }
 
         public Vector()
@@ -90,7 +90,7 @@ namespace ComMethods
 
             bool isEqual = true;
             for (int i = 0; i < a.Size; i++)
-                isEqual &= Math.Abs(a.Elem[i] - b.Elem[i]) < 1e-9;
+                isEqual &= Math.Abs(a.Elem[i] - b.Elem[i]) < CONST.EPS;
 
             return isEqual;
         }
