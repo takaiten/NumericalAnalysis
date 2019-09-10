@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using ComMethods;
 
@@ -303,10 +304,10 @@ namespace ComMethods.Tests
     }
 
     [TestFixture]
-    public class GaussTests
+    public class DirectSolvers
     {
         [TestCase(Author = "Marina")]
-        public void When_MatrixTransformedTo_UT()
+        public void When_MatrixTransformedTo_U()
         {
             // Arrange
             Matrix A = new Matrix(3, 3);
@@ -321,32 +322,75 @@ namespace ComMethods.Tests
             B.Elem[2, 2] = -49;
             
             // Act 
-            Gauss.DirectWay(A);
+            Matrix U = Gauss.DirectWay(A);
             
             // Assert
-            Assert.That(A == B);
+            Assert.That(U == B);
         }
 
         [TestCase(Author = "Marina")]
-        public void When_MatrixTransformedTo_LT()
+        public void When_LU_Decomposition()
         {
             // Arrange
-
             Matrix A = new Matrix(3, 3);
-            Matrix L = new Matrix(3, 3);
-            Matrix U = A;
-
             A.Elem[0, 0] = 6; A.Elem[0, 1] = 2; A.Elem[0, 2] = 3;
             A.Elem[1, 0] = 2; A.Elem[1, 1] = 1; A.Elem[1, 2] = 8;
             A.Elem[2, 0] = 3; A.Elem[2, 2] = 5;
             
+            Matrix L = new Matrix(3, 3);
+            Matrix U = Gauss.DirectWay(A);
+            
             // Act
-            Gauss.DirectWay(U);
             LUDecomposition.Transform(A, L, U);
 
             // Assert
-
             Assert.That(L * U == A);
+        }
+        
+        [TestCase(2, Author = "Oleg")]
+        [TestCase(10, Author = "Oleg")]
+        [TestCase(100, Author = "Oleg")]
+        public void When_LU_DecompositionRandom(int size)
+        {
+            // Arrange
+            Random device = new Random();
+            
+            Matrix A = new Matrix(size, size);
+            for (int i = 0; i < size; i++)
+                for (int j = 0; j < size; j++)
+                    A.Elem[i, j] = device.NextDouble();
+            
+            Matrix L = new Matrix(size, size);
+            Matrix U = Gauss.DirectWay(A);
+
+            // Act
+            LUDecomposition.Transform(A, L, U);
+
+            // Assert
+            Assert.That(L * U == A);
+        }
+        
+        [TestCase(Author = "Oleg")]
+        public void When_GetSolution_Gauss()
+        {
+            // Arrange
+            Matrix A = new Matrix(2, 2);
+            A.Elem[0, 0] = 5; A.Elem[0, 1] = 6;
+            A.Elem[1, 0] = 10; A.Elem[1, 1] = 13;
+            
+            Vector F = new Vector(2);
+            F.Elem[0] = 1;
+            F.Elem[1] = 3;
+            
+            Vector trueRes = new Vector(2);
+            trueRes.Elem[0] = -1;
+            trueRes.Elem[1] = 1;
+
+            // Act 
+            Vector res = Gauss.StartSolver(A, F);
+
+            // Assert
+            Assert.That(res == trueRes);
         }
     }
 }

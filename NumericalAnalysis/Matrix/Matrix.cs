@@ -25,7 +25,16 @@ namespace ComMethods
             Column = column;
             Elem = new double[row, column];
         }
-
+        
+        public Matrix(Matrix inp)
+        {
+            Row = inp.Row;
+            Column = inp.Column;
+            Elem = new double[Row, Column];
+            for(int i = 0; i < Row; i++)
+                for (int j = 0; j < Column; j++)
+                    Elem[i, j] = inp.Elem[i, j];
+        }
         
         // Methods 
         public void Print()
@@ -85,6 +94,11 @@ namespace ComMethods
             }
         }
 
+        public Matrix Copy()
+        {
+            return new Matrix(this);
+        }
+        
         // Operator overloads
         public static Vector operator *(Matrix M, Vector V) // Mult matrix by a vector 
         {

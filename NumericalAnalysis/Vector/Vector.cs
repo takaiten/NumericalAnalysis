@@ -20,6 +20,14 @@ namespace ComMethods
             Size = size;
             Elem = new double[size];
         }
+        
+        public Vector(Vector inp)
+        {
+            Size = inp.Size;
+            Elem = new double[Size];
+            for (int i = 0; i < Size; i++)
+                Elem[i] = inp.Elem[i];
+        }
 
         // Methods
         public void Print()
@@ -62,6 +70,18 @@ namespace ComMethods
                 Elem[i] = v2.Elem[i];
         }
 
+        public Vector Copy()
+        {
+            return new Vector(this);
+        }
+
+        public void SwitchElems(int firstIndex, int secondIndex)
+        {
+            double temp = Elem[firstIndex];
+            Elem[firstIndex] = Elem[secondIndex];
+            Elem[secondIndex] = temp;
+        }
+        
         // Operator overloads
         public static Vector operator *(Vector v, double x) // Mult vector by a scalar
         {

@@ -4,49 +4,70 @@ using System.Text;
 
 namespace ComMethods
 {
-    class Gauss
+    static class Gauss
     {
-        public static int GetLeadElem(Matrix A, int j)
+        public static int GetLeadElemIndex(Matrix A, int j)
         {
             int index = j;
             for (int i = j + 1; i < A.Row; i++)
                 if (Math.Abs(A.Elem[i, j]) > Math.Abs(A.Elem[index, j]))
                     index = i;
+
             if (Math.Abs(A.Elem[index, j]) < CONST.EPS)
-                throw new Exception("GAUSS: Matrix is singular");
+                throw new Exception("GAUSS:GetLeadElemIndex: Matrix is singular");
 
             return index;
         }
 
-        public void DirectWay(Matrix A, Vector F)
+        public static void DirectWay(Matrix res, Vector F)
         {
+//            double help;
+//
+//            for (int k = 0; k < A.Row - 1; k++)
+//            {
+//                int leadElem = GetLeadElem(A, k);
+//                if (leadElem != k)
+//                {
+//                    A.SwitchRows(leadElem, k);
+//                    F.SwitchElems(leadElem, k);
+//                }
+//
+//                for (int i = k + 1; i < A.Row; i++)
+//                {
+//                    help = A.Elem[i, k] / A.Elem[k, k];
+//                    A.Elem[i, k] = 0;
+//                    for (int j = i + 1; j < A.Column; j++)
+//                        A.Elem[i, j] -= help * A.Elem[k, j];
+//                    F.Elem[i] -= help * F.Elem[k];
+//                }
+//            }
+
             double help;
 
-            for (int k = 0; k < A.Row - 1; k++)
+            for (int row = 0; row < res.Row - 1; row++)
             {
-                int leadElem = GetLeadElem(A, k);
-
-                if (leadElem != k)
+                int leadElem = GetLeadElemIndex(res, row);
+                if (leadElem != row)
                 {
-                    A.SwitchRows(leadElem, k);
-
-                    help = F.Elem[k];
-                    F.Elem[k] = F.Elem[leadElem];
-                    F.Elem[leadElem] = help;
+                    res.SwitchRows(leadElem, row);
+                    F.SwitchElems(leadElem, row);
                 }
 
-                for (int i = k + 1; i < A.Row; i++)
+                for (int rowFromDiag = row + 1; rowFromDiag < res.Row; rowFromDiag++)
                 {
-                    help = A.Elem[i, k] / A.Elem[k, k];
-                    A.Elem[i, k] = 0;
-                    for (int j = i + 1; j < A.Column; j++)
-                        A.Elem[i, j] -= help * A.Elem[k, j];
-                    F.Elem[i] -= help * F.Elem[k];
+                    if (Math.Abs(res.Elem[rowFromDiag, row]) < CONST.EPS)
+                        throw new Exception("GAUSS:DirectWay: Division by 0");
+
+                    help = res.Elem[row, row] / res.Elem[rowFromDiag, row];
+                    for (int column = res.Column - 1; column >= 0; column--)
+                        res.Elem[rowFromDiag, column] = res.Elem[rowFromDiag, column] * help - res.Elem[row, column];
+                    
+                    F.Elem[rowFromDiag] = F.Elem[rowFromDiag] * help - F.Elem[row];
                 }
             }
         }
 
-        public static void DirectWay(Matrix A)
+        public static Matrix DirectWay(Matrix A)
         {
 //            double help;
 //
@@ -63,26 +84,31 @@ namespace ComMethods
 //                    A.Elem[j, i] = 0.0f;
 //                    for (int k = i + 1; k < A.Column; k++)
 //                        A.Elem[j, k] -= help * A.Elem[j, k];
-//                }
+//                }    
 //            }
+            Matrix res = A.Copy();
+            double help;
 
-            for (int k = 0; k < A.Row - 1; k++)
+            for (int row = 0; row < res.Row - 1; row++)
             {
-                int lead = GetLeadElem(A, k);
-                if (lead != k)
-                    A.SwitchRows(lead, k);
+                int leadElem = GetLeadElemIndex(res, row);
+                if (leadElem != row) res.SwitchRows(leadElem, row);
 
-                for (int i = k + 1; i < A.Row; i++)
-                for (int j = A.Column - 1; j >= 0; j--)
-                    if (Math.Abs(A.Elem[i, k]) > CONST.EPS)
-                    {
-                        A.Elem[i, j] *= A.Elem[k, k] / A.Elem[i, k];
-                        A.Elem[i, j] -= A.Elem[k, j];
-                    }
+                for (int rowFromDiag = row + 1; rowFromDiag < res.Row; rowFromDiag++)
+                {
+                    if (Math.Abs(res.Elem[rowFromDiag, row]) < CONST.EPS)
+                        throw new Exception("GAUSS:DirectWay: Division by 0");
+
+                    help = res.Elem[row, row] / res.Elem[rowFromDiag, row];
+                    for (int column = res.Column - 1; column >= 0; column--)
+                        res.Elem[rowFromDiag, column] = res.Elem[rowFromDiag, column] * help - res.Elem[row, column];
+                }
             }
+
+            return res;
         }
 
-        public Vector StartSolver(Matrix A, Vector F)
+        public static Vector StartSolver(Matrix A, Vector F)
         {
             DirectWay(A, F);
 
