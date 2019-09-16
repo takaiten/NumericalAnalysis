@@ -6,36 +6,50 @@ namespace ComMethods
 {
     static class LUDecomposition
     {
-        public static void Transform(Matrix A, Matrix L, Matrix U)
+        public static void luDecomposition(Matrix A, out Matrix L, out Matrix U)
         {
-            for (int i = 0; i < L.Row; i++)
-                for (int j = 0; j < L.Column; j++)
+            if (A.Column != A.Row)
+                throw new Exception("luDecomposition: input matrix isn't square");
+            int n = A.Column;
+            L = new Matrix(n, n);
+            U = new Matrix(n, n);
+
+            // Decomposing into Upper and Lower Triangular matrices
+            for (int i = 0; i < n; i++)
+            {
+                // Upper Triangular 
+                for (int k = i; k < n; k++)
                 {
-                    double sum = 0.0f;
+                    double sum = 0;
+                    for (int j = 0; j < i; j++)
+                        sum += (L.Elem[i, j] * U.Elem[j, k]);
 
-                    for (int k = 0; k < j; k++)
-                        sum += L.Elem[i, k] * U.Elem[k, j];
-
-                    L.Elem[i, j] = (A.Elem[i, j] - sum) / U.Elem[j, j];
+                    U.Elem[i, k] = A.Elem[i, k] - sum;
                 }
-        }
+
+                // Lower Triangular 
+                for (int k = i; k < n; k++)
+                {
+                    if (i == k)
+                        L.Elem[i, i] = 1; // Diagonal is 1 
+                    else
+                    {
+                        double sum = 0;
+                        for (int j = 0; j < i; j++)
+                            sum += (L.Elem[k, j] * U.Elem[j, i]);
+
+                        L.Elem[k, i] = (A.Elem[k, i] - sum) / U.Elem[i, i];
+                    }
+                }
+            }
+        } 
         
-        public static Vector StartSolver(Matrix A, Vector F)
-        {
-            // TODO:
-            // Currently LU is not working correctly. 
-            // Think about copying matrices. Is it worth it?
-            Matrix L = new Matrix(A.Row, A.Column);
-            Matrix U = Gauss.DirectWay(A);
-            
-            Transform(A, L, U);
-            
-            var res = new Vector(F.Size);
-
-            Substitution.BackRowSubstitution(U, F, res);
-            Substitution.DirectRowSubstitution(L, F, res);
-
-            return res;
-        }
+//        public static Vector StartSolver(Matrix A, Vector F)
+//        {
+//            // TODO:
+//            // Currently LU is not working correctly. 
+//            // Think about copying matrices. Is it worth it?
+//            
+//        }
     }
 }
