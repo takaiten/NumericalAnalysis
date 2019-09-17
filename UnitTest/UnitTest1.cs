@@ -1,8 +1,8 @@
 using System;
-using NUnit.Framework;
 using ComMethods;
+using NUnit.Framework;
 
-namespace ComMethods.Tests
+namespace UnitTest
 {
     [TestFixture]
     public class VectorTests
@@ -167,19 +167,40 @@ namespace ComMethods.Tests
         public void When_MatrixMult_ByVector()
         {
             // Arrange
-            Matrix A = new Matrix(2, 3);
+            Matrix A = new Matrix(3, 3);
             Vector v = new Vector(3);
-            Vector trueRes = new Vector(2);
+            Vector trueRes = new Vector(3);
+            
+            A.Elem[0, 0] = 2;
+            A.Elem[0, 1] = 3;
+            A.Elem[0, 2] = -1;
 
-            for (int i = 0; i < 3; i++)
-            {
-                v.Elem[i] = 3;
-                for (int j = 0; j < 2; j++)
-                    A.Elem[j, i] = 1;
-            }
+            A.Elem[1, 0] = 1;
+            A.Elem[1, 1] = -2;
+            A.Elem[1, 2] = 1;
+            
+            A.Elem[2, 0] = 1;
+            A.Elem[2, 1] = 0;
+            A.Elem[2, 2] = 2;
 
-            for (int i = 0; i < 2; i++)
-                trueRes.Elem[i] = 9;
+            v.Elem[0] = 4;
+            v.Elem[1] = 0;
+            v.Elem[2] = -1;
+
+            trueRes.Elem[0] = 9;
+            trueRes.Elem[1] = 3;
+            trueRes.Elem[2] = 2;
+           
+            
+//            for (int i = 0; i < 3; i++)
+//            {
+//                v.Elem[i] = 3;
+//                for (int j = 0; j < 2; j++)
+//                    A.Elem[j, i] = 1;
+//            }
+//
+//            for (int i = 0; i < 2; i++)
+//                trueRes.Elem[i] = 9;
 
             // Act and Assert
             Assert.That(A * v == trueRes);
@@ -324,6 +345,39 @@ namespace ComMethods.Tests
 
             // Assert
             Assert.That(L * U == A);
+        }
+
+        [TestCase]
+        public void When_Solve_SLE_By_LU()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            A.Elem[0, 0] = 2;
+            A.Elem[0, 1] = 3;
+            A.Elem[0, 2] = -1;
+
+            A.Elem[1, 0] = 1;
+            A.Elem[1, 1] = -2;
+            A.Elem[1, 2] = 1;
+            
+            A.Elem[2, 0] = 1;
+            A.Elem[2, 1] = 0;
+            A.Elem[2, 2] = 2;
+            
+            Vector F = new Vector(3);
+            F.Elem[0] = 9;
+            F.Elem[1] = 3;
+            F.Elem[2] = 2;
+    
+            luDecomp LU = new luDecomp(A);            
+            
+            // Act
+            Vector luRes = LU.startSolver(F);
+//            Vector gaussRes = Gauss.StartSolver(A, F);
+            
+            // Assert
+            Assert.That(A * luRes == F);
+//            Assert.That(A * gaussRes == F);
         }
     }
 }

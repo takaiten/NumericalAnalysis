@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -10,20 +10,29 @@ namespace ComMethods
     {
         //размер матрицы
         public int Row { private set; get; }
+
         public int Column { private set; get; }
+
         //диагональ матрицы
-        public double[] di {set; get;}
+        public double[] di { set; get; }
+
         //нижний треугольник
         public double[] altr { set; get; }
+
         //верхний треугольник
         public double[] autr { set; get; }
+
         //номера строк (столбцов) ненулевых элементов
         public int[] jptr { set; get; }
+
         //номера строк (столбцов), с которых начинается jptr
         public int[] iptr { set; get; }
 
         //конструктор по умолчанию
-        public CSlRMatrix() { }
+        public CSlRMatrix()
+        {
+        }
+
         //конструктор по файлам
         public CSlRMatrix(string path)
         {
@@ -36,7 +45,7 @@ namespace ComMethods
                 Column = Row;
                 //выделение памяти под массивы di и iptr
                 iptr = new int[Column + 1];
-                di   = new double[Column];
+                di = new double[Column];
             }
 
             //диагональ матрицы
@@ -44,7 +53,8 @@ namespace ComMethods
             {
                 for (int i = 0; i < Column; i++)
                 {
-                    di[i] = Convert.ToDouble(reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                    di[i] = Convert.ToDouble(
+                        reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
                 }
             }
 
@@ -53,7 +63,8 @@ namespace ComMethods
             {
                 for (int i = 0; i <= Column; i++)
                 {
-                    iptr[i] = Convert.ToInt32(reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                    iptr[i] = Convert.ToInt32(
+                        reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
                 }
             }
 
@@ -67,25 +78,31 @@ namespace ComMethods
             var reader3 = new StreamReader(File.Open(path + "autr.txt", FileMode.Open));
             for (int i = 0; i < size; i++)
             {
-                jptr[i] = Convert.ToInt32 (reader1.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
-                altr[i] = Convert.ToDouble(reader2.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
-                autr[i] = Convert.ToDouble(reader3.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                jptr[i] = Convert.ToInt32(
+                    reader1.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                altr[i] = Convert.ToDouble(
+                    reader2.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                autr[i] = Convert.ToDouble(
+                    reader3.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
             }
-            reader1.Close(); reader2.Close(); reader3.Close();
+
+            reader1.Close();
+            reader2.Close();
+            reader3.Close();
         }
 
         //-------------------------------------------------------------------------------------------------
 
         //умножение матрицы на вектор A*x = y
-        public void Mult_MV (Vector X, Vector Y)
+        public void Mult_MV(Vector X, Vector Y)
         {
             for (int i = 0; i < Column; i++) Y.Elem[i] = X.Elem[i] * di[i];
             for (int i = 0; i < Column; i++)
-                for (int j = iptr[i] - 1; j < iptr[i + 1] - 1; j++)
-                {
-                    Y.Elem[i] += X.Elem[jptr[j] - 1] * altr[j];
-                    Y.Elem[jptr[j] - 1] += X.Elem[i] * autr[j];
-                }
+            for (int j = iptr[i] - 1; j < iptr[i + 1] - 1; j++)
+            {
+                Y.Elem[i] += X.Elem[jptr[j] - 1] * altr[j];
+                Y.Elem[jptr[j] - 1] += X.Elem[i] * autr[j];
+            }
         }
 
         //-------------------------------------------------------------------------------------------------
@@ -95,11 +112,11 @@ namespace ComMethods
         {
             for (int i = 0; i < Column; i++) Y.Elem[i] = X.Elem[i] * di[i];
             for (int i = 0; i < Column; i++)
-                for (int j = iptr[i] - 1; j < iptr[i + 1] - 1; j++)
-                {
-                    Y.Elem[i] += X.Elem[jptr[j] - 1] * autr[j];
-                    Y.Elem[jptr[j] - 1] += X.Elem[i] * altr[j];
-                }
+            for (int j = iptr[i] - 1; j < iptr[i + 1] - 1; j++)
+            {
+                Y.Elem[i] += X.Elem[jptr[j] - 1] * autr[j];
+                Y.Elem[jptr[j] - 1] += X.Elem[i] * altr[j];
+            }
         }
 
         //-------------------------------------------------------------------------------------------------
@@ -172,10 +189,18 @@ namespace ComMethods
             int nAutr = autr.Length;
             matrix.autr = new double[nAutr];
             matrix.altr = new double[nAutr];
-            matrix.di   = new double[Column];
+            matrix.di = new double[Column];
 
-            for (int i = 0; i < nAutr; i++) { matrix.altr[i] = altr[i]; matrix.autr[i] = autr[i]; }
-            for (int i = 0; i < Column; i++) { matrix.di[i] = di[i]; }
+            for (int i = 0; i < nAutr; i++)
+            {
+                matrix.altr[i] = altr[i];
+                matrix.autr[i] = autr[i];
+            }
+
+            for (int i = 0; i < Column; i++)
+            {
+                matrix.di[i] = di[i];
+            }
 
             for (int i = 1; i < Column; i++)
             {
@@ -192,10 +217,12 @@ namespace ComMethods
                             }
                         }
                     }
+
                     matrix.autr[j] /= matrix.di[jptr[j] - 1];
                     matrix.di[i] -= matrix.autr[j] * matrix.altr[j];
                 }
             }
+
             return matrix;
         }
     }

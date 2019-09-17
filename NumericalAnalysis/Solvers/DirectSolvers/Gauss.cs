@@ -23,22 +23,22 @@ namespace ComMethods
         {
             double help;
 
-            for (int k = 0; k < A.Row - 1; k++)
+            for (int i = 0; i < A.Row - 1; i++)
             {
-                int leadElem = GetLeadElemIndex(A, k);
-                if (leadElem != k)
+                int leadElem = GetLeadElemIndex(A, i);
+                if (leadElem != i)
                 {
-                    A.SwitchRows(leadElem, k);
-                    F.SwitchElems(leadElem, k);
+                    A.SwitchRows(leadElem, i);
+                    F.SwitchElems(leadElem, i);
                 }
 
-                for (int i = k + 1; i < A.Row; i++)
+                for (int j = i + 1; j < A.Row; j++)
                 {
-                    help = A.Elem[i, k] / A.Elem[k, k];
-                    A.Elem[i, k] = 0;
-                    for (int j = i + 1; j < A.Column; j++)
-                        A.Elem[i, j] -= help * A.Elem[k, j];
-                    F.Elem[i] -= help * F.Elem[k];
+                    help = A.Elem[j, i] / A.Elem[i, i];
+                    A.Elem[j, i] = 0;
+                    for (int k = i + 1; k < A.Column; k++)
+                        A.Elem[j, k] -= help * A.Elem[i, k];
+                    F.Elem[j] -= help * F.Elem[i];
                 }
             }
         }
@@ -60,12 +60,13 @@ namespace ComMethods
                     A.Elem[j, i] = 0.0f;
                     for (int k = i + 1; k < A.Column; k++)
                         A.Elem[j, k] -= help * A.Elem[j, k];
-                }    
+                }
             }
         }
 
-        public static Vector StartSolver(Matrix A, Vector F)
+        public static Vector StartSolver(Matrix inp, Vector F)
         {
+            Matrix A = new Matrix(inp);
             DirectWay(A, F);
 
             var res = new Vector(F.Size);

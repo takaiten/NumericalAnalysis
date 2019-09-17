@@ -25,17 +25,17 @@ namespace ComMethods
             Column = column;
             Elem = new double[row, column];
         }
-        
+
         public Matrix(Matrix inp)
         {
             Row = inp.Row;
             Column = inp.Column;
             Elem = new double[Row, Column];
-            for(int i = 0; i < Row; i++)
-                for (int j = 0; j < Column; j++)
-                    Elem[i, j] = inp.Elem[i, j];
+            for (int i = 0; i < Row; i++)
+            for (int j = 0; j < Column; j++)
+                Elem[i, j] = inp.Elem[i, j];
         }
-        
+
         // Methods 
         public void Print()
         {
@@ -98,7 +98,7 @@ namespace ComMethods
         {
             return new Matrix(this);
         }
-        
+
         // Operator overloads
         public static Vector operator *(Matrix M, Vector V) // Mult matrix by a vector 
         {
@@ -106,10 +106,10 @@ namespace ComMethods
                 throw new Exception("MATRIX*VECTOR: Vector size doesn't match matrix dimensions");
 
             var result = new Vector(M.Row); // Duck typing 
-            
+
             for (int i = 0; i < M.Row; i++)
-                for (int j = 0; j < M.Column; j++) 
-                    result.Elem[i] += M.Elem[i, j] * V.Elem[j];
+            for (int j = 0; j < M.Column; j++)
+                result.Elem[i] += M.Elem[i, j] * V.Elem[j];
 
             return result;
         }
@@ -120,11 +120,11 @@ namespace ComMethods
                 throw new Exception("MATRIX*MATRIX: Matrices dimensions doesn't match");
 
             var result = new Matrix(A.Row, B.Column);
-            
+
             for (int i = 0; i < A.Row; i++)
-                for (int j = 0; j < B.Column; j++)
-                    for (int k = 0; k < A.Column; k++)
-                        result.Elem[i, j] += A.Elem[i, k] * B.Elem[k, j];
+            for (int j = 0; j < B.Column; j++)
+            for (int k = 0; k < A.Column; k++)
+                result.Elem[i, j] += A.Elem[i, k] * B.Elem[k, j];
 
             return result;
         }
@@ -136,8 +136,8 @@ namespace ComMethods
 
             bool isEqual = true;
             for (int i = 0; i < A.Row; i++)
-                for (int j = 0; j < A.Column; j++)
-                    isEqual &= Math.Abs(A.Elem[i, j] - B.Elem[i, j]) < CONST.EPS;
+            for (int j = 0; j < A.Column; j++)
+                isEqual &= Math.Abs(A.Elem[i, j] - B.Elem[i, j]) < CONST.EPS;
 
             return isEqual;
         }

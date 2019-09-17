@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace ComMethods
@@ -42,14 +43,68 @@ namespace ComMethods
                     }
                 }
             }
-        } 
-        
-//        public static Vector StartSolver(Matrix A, Vector F)
-//        {
-//            // TODO:
-//            // Currently LU is not working correctly. 
-//            // Think about copying matrices. Is it worth it?
-//            
-//        }
+        }
+
+        public static Vector StartSolver(Matrix A, Vector F)
+        {
+            // TODO:
+            Vector x = new Vector(F.Size);
+            Vector y = new Vector(F.Size);
+
+            luDecomposition(A, out var L, out var U);
+
+            Substitution.DirectRowSubstitution(A, F, y);
+            Substitution.BackRowSubstitution(A, y, x);
+
+            return x;
+        }
+    }
+
+    class luDecomp
+    {
+        public Matrix LU { set; get; }
+
+        public luDecomp()
+        {
+        }
+
+        public luDecomp(Matrix A)
+        {
+            LU = new Matrix(A);
+            Gauss.DirectWay(LU);
+            
+            for (int i = 0; i < A.Row; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    double sum = 0;
+
+                    for (int k = 0; k < j; k++)
+                        sum += LU.Elem[i, k] * LU.Elem[k, j];
+                    
+                    LU.Elem[i, j] = (A.Elem[i, j] - sum) / LU.Elem[j, j];
+                }
+
+            }
+        }
+
+        void DirectWay(Matrix A, Vector F, out Vector res)
+        {
+            res = new Vector(F);
+            for (int i = 0; i < A.Row; i++)
+                for (int j = 0; j < i; j++)
+                    res.Elem[i] -= A.Elem[i, j] * res.Elem[j];
+        }
+
+        public Vector startSolver(Vector F)
+        {
+//            if (LU == null)
+//                throw new Exception("LU: no matrix created");
+            
+            DirectWay(LU, F, out var res);
+            Substitution.BackRowSubstitution(LU, res, res);
+            
+            return res;
+        }
     }
 }
