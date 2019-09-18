@@ -64,9 +64,11 @@ namespace ComMethods
             }
         }
 
-        public static Vector StartSolver(Matrix inp, Vector F)
+        public static Vector StartSolver(Matrix inp, Vector right)
         {
             Matrix A = new Matrix(inp);
+            Vector F = new Vector(right);
+
             DirectWay(A, F);
 
             var res = new Vector(F.Size);
