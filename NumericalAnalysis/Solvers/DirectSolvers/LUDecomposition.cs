@@ -5,56 +5,73 @@ using System.Text;
 
 namespace ComMethods
 {
-    static class LUDecomposition
+    class LUDecomposition
     {
-        public static void luDecomposition(Matrix A, out Matrix L, out Matrix U)
+        private Matrix LU { set; get; }
+        private int _n;
+        private double _sum;
+
+        public LUDecomposition()
         {
-            if (A.Column != A.Row)
-                throw new Exception("luDecomposition: input matrix isn't square");
-            int n = A.Column;
-            L = new Matrix(n, n);
-            U = new Matrix(n, n);
+            _n = 0;
+            _sum = 0.0f;
+        }
 
-            // Decomposing into Upper and Lower Triangular matrices
-            for (int i = 0; i < n; i++)
+        public LUDecomposition(Matrix A)
+        {
+            CompactLU(A);
+        }
+
+        private void CompactLU(Matrix A)
+        {
+            _n = A.Row;
+            LU = new Matrix(_n, _n);
+            
+            for (int i = 0; i < _n; i++)
             {
-                // Upper Triangular 
-                for (int k = i; k < n; k++)
+                for (int j = i; j < _n; j++)
                 {
-                    double sum = 0;
-                    for (int j = 0; j < i; j++)
-                        sum += (L.Elem[i, j] * U.Elem[j, k]);
-
-                    U.Elem[i, k] = A.Elem[i, k] - sum;
+                    _sum = 0;
+                    for (int k = 0; k < i; k++)
+                        _sum += LU.Elem[i, k] * LU.Elem[k, j];
+                    LU.Elem[i, j] = A.Elem[i, j] - _sum;
                 }
 
-                // Lower Triangular 
-                for (int k = i; k < n; k++)
+                for (int j = i + 1; j < _n; j++)
                 {
-                    if (i == k)
-                        L.Elem[i, i] = 1; // Diagonal is 1 
-                    else
-                    {
-                        double sum = 0;
-                        for (int j = 0; j < i; j++)
-                            sum += (L.Elem[k, j] * U.Elem[j, i]);
-
-                        L.Elem[k, i] = (A.Elem[k, i] - sum) / U.Elem[i, i];
-                    }
+                    _sum = 0;
+                    for (int k = 0; k < i; k++)
+                        _sum += LU.Elem[j, k] * LU.Elem[k, i];
+                    LU.Elem[j, i] = (1 / LU.Elem[i, i]) * (A.Elem[j, i] - _sum);
                 }
             }
         }
 
-        public static Vector StartSolver(Matrix A, Vector F)
+        public Vector StartSolver(Matrix A, Vector F)
         {
-            // TODO:
-            Vector x = new Vector(F.Size);
-            Vector y = new Vector(F.Size);
+            if (LU == null)
+                CompactLU(A);
 
-            luDecomposition(A, out var L, out var U);
+            // LU = L + U - I
+            // Find solution of Ly = F
+            Vector y = new Vector(_n);
+            for (int i = 0; i < _n; i++)
+            {
+                _sum = 0;
+                for (int k = 0; k < i; k++)
+                    _sum += LU.Elem[i, k] * y.Elem[k];
+                y.Elem[i] = F.Elem[i] - _sum;
+            }
 
-            Substitution.DirectRowSubstitution(L, F, y);
-            Substitution.BackRowSubstitution(U, y, x);
+            // Find solution of Ux = y
+            Vector x = new Vector(_n);
+            for (int i = _n - 1; i >= 0; i--)
+            {
+                _sum = 0;
+                for (int k = i + 1; k < _n; k++)
+                    _sum += LU.Elem[i, k] * x.Elem[k];
+                x.Elem[i] = (1 / LU.Elem[i, i]) * (y.Elem[i] - _sum);
+            }
 
             return x;
         }

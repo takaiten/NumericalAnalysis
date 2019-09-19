@@ -7,20 +7,21 @@ namespace ComMethods
         int Size { get; }
     }
 
-    class Vector : IVector
+    public class Vector : IVector
     {
         public int Size { get; }
-        public double[] Elem { set; get; }
+        public double[] Elem { get; }
 
         public Vector()
-        {}
+        {
+        }
 
         public Vector(int size)
         {
             Size = size;
             Elem = new double[size];
         }
-        
+
         public Vector(Vector inp)
         {
             Size = inp.Size;
@@ -43,8 +44,8 @@ namespace ComMethods
 
             Matrix res = new Matrix(Size, Size);
             for (int i = 0; i < Size; i++)
-                for (int j = 0; j < Size; j++)
-                    res.Elem[i, j] = Elem[i] * r.Elem[j];
+            for (int j = 0; j < Size; j++)
+                res.Elem[i, j] = Elem[i] * r.Elem[j];
 
             return res;
         }
@@ -81,7 +82,7 @@ namespace ComMethods
             Elem[firstIndex] = Elem[secondIndex];
             Elem[secondIndex] = temp;
         }
-        
+
         // Operator overloads
         public static Vector operator *(Vector v, double x) // Mult vector by a scalar
         {
@@ -105,19 +106,32 @@ namespace ComMethods
 
         public static bool operator ==(Vector a, Vector b)
         {
-            if (a.Size != b.Size)
-                return false;
-
-            bool isEqual = true;
-            for (int i = 0; i < a.Size; i++)
-                isEqual &= Math.Abs(a.Elem[i] - b.Elem[i]) < CONST.EPS;
-
-            return isEqual;
+            return a?.Equals(b) ?? object.ReferenceEquals(b, null);
         }
 
         public static bool operator !=(Vector a, Vector b)
         {
             return !(a == b);
+        }
+
+        protected bool Equals(Vector other)
+        {
+            if (this.Size != other.Size)
+                return false;
+
+            bool isEqual = true;
+            for (int i = 0; i < this.Size; i++)
+                isEqual &= Math.Abs(this.Elem[i] - other.Elem[i]) < CONST.EPS;
+
+            return isEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Vector) obj);
         }
     }
 }

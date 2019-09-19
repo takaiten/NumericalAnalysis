@@ -9,11 +9,11 @@ namespace ComMethods
         int Column { get; }
     }
 
-    class Matrix : IMatrix
+    public class Matrix : IMatrix
     {
         public int Row { get; }
         public int Column { get; }
-        public double[,] Elem { set; get; }
+        public double[,] Elem { get; }
 
         public Matrix()
         {
@@ -131,20 +131,33 @@ namespace ComMethods
 
         public static bool operator ==(Matrix A, Matrix B)
         {
-            if (A.Row != B.Row || A.Column != B.Column)
-                return false;
-
-            bool isEqual = true;
-            for (int i = 0; i < A.Row; i++)
-            for (int j = 0; j < A.Column; j++)
-                isEqual &= Math.Abs(A.Elem[i, j] - B.Elem[i, j]) < CONST.EPS;
-
-            return isEqual;
+            return A?.Equals(B) ?? object.ReferenceEquals(B, null);
         }
 
         public static bool operator !=(Matrix A, Matrix B)
         {
             return !(A == B);
+        }
+
+        protected bool Equals(Matrix other)
+        {
+            if (this.Row != other.Row || this.Column != other.Column)
+                return false;
+
+            bool isEqual = true;
+            for (int i = 0; i < this.Row; i++)
+            for (int j = 0; j < this.Column; j++)
+                isEqual &= Math.Abs(this.Elem[i, j] - other.Elem[i, j]) < CONST.EPS;
+
+            return isEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Matrix) obj);
         }
     }
 }

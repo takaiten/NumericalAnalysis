@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace UnitTest
 {
-    [TestFixture, Ignore("Outdated")]
+    [TestFixture(Ignore = "Outdated")]
     public class VectorTests
     {
         [TestCase(Author = "Oleg")]
@@ -129,7 +129,7 @@ namespace UnitTest
         }
     }
 
-    [TestFixture, Ignore("Outdated")]
+    [TestFixture(Ignore = "Outdated")]
     public class MatrixTests
     {
         [TestCase(Author = "Marina")]
@@ -327,28 +327,8 @@ namespace UnitTest
     [TestFixture]
     public class DirectSolvers
     {
-        [TestCase(2, Author = "Oleg")]
-        [TestCase(10, Author = "Oleg")]
-        [TestCase(100, Author = "Oleg")]
-        public void When_LU_DecompositionRandom(int size)
-        {
-            // Arrange
-            Random device = new Random();
-            
-            Matrix A = new Matrix(size, size);
-            for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    A.Elem[i, j] = device.NextDouble();
-
-            // Act
-            LUDecomposition.luDecomposition(A, out var L, out var U);
-
-            // Assert
-            Assert.That(L * U == A);
-        }
-
-        [TestCase]
-        public void When_Solve_SLE_By_LU()
+        [TestCase(Author = "Oleg")]
+        public void When_Solve_SLE()
         {
             // Arrange
             Matrix A = new Matrix(3, 3);
@@ -368,11 +348,11 @@ namespace UnitTest
             F.Elem[0] = 9;
             F.Elem[1] = 3;
             F.Elem[2] = 2;
-    
-            //luDecomp LU = new luDecomp(A);            
+
+            LUDecomposition lu = new LUDecomposition();
             
             // Act
-            Vector luRes = LUDecomposition.StartSolver(A, F);
+            Vector luRes = lu.StartSolver(A, F);
             Vector gaussRes = Gauss.StartSolver(A, F);
 
             // Assert
