@@ -1,6 +1,8 @@
 using System;
 using ComMethods;
 using NUnit.Framework;
+using ComMethods_Givens = ComMethods.Givens;
+using ComMethods_GramSchmidt = ComMethods.GramSchmidt;
 
 namespace UnitTest
 {
@@ -351,6 +353,7 @@ namespace UnitTest
 
             LUDecomposition lu = new LUDecomposition();
             
+            
             // Act
             Vector luRes = lu.StartSolver(A, F);
             Vector gaussRes = Gauss.StartSolver(A, F);
@@ -358,6 +361,35 @@ namespace UnitTest
             // Assert
             Assert.That(A * luRes == F);
             Assert.That(A * gaussRes == F);
+        }
+
+        [TestCase(3)]
+        [TestCase(10)]
+        public void When_Transpose_Q(int size)
+        {
+            // Arrange
+            Random device = new Random();
+            Matrix A = new Matrix(size, size);
+            Matrix I = new Matrix(size, size);
+            for (int i = 0; i < size; i++)
+            {
+                I.Elem[i, i] = 1;
+                for (int j = 0; j < size; j++)
+                    A.Elem[i, j] = device.NextDouble();    
+            }
+            
+            ComMethods_GramSchmidt.Classic(A, out var Q1, out var R1);
+            ComMethods_GramSchmidt.Modified(A, out var Q2, out var R2);
+            Matrix QT1 = new Matrix(Q1);
+            Matrix QT2 = new Matrix(Q2);
+            
+            // Act
+            QT1.Transpose();
+            QT2.Transpose();
+            
+            // Assert
+            Assert.That(QT1 * Q1 == I);
+            Assert.That(QT2 * Q2 == I);
         }
     }
 }

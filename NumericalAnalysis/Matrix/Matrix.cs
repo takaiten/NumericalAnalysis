@@ -99,6 +99,19 @@ namespace ComMethods
             return new Matrix(this);
         }
 
+        public void Transpose()
+        {
+            double temp;
+
+            for (int i = 0; i < Row; i++)
+                for (int j = i + 1; j < Column; j++)
+                {
+                    temp = Elem[i, j];
+                    Elem[i, j] = Elem[j, i];
+                    Elem[j, i] = temp;
+                }
+        }
+        
         // Operator overloads
         public static Vector operator *(Matrix M, Vector V) // Mult matrix by a vector 
         {

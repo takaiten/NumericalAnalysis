@@ -25,6 +25,12 @@
       <Compile Include="..\NumericalAnalysis\Solvers\DirectSolvers\Substitution.cs">
         <Link>Solvers\DirectSolvers\Substitution.cs</Link>
       </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Givens.cs">
+        <Link>Solvers\OrthogonalSolvers\Givens.cs</Link>
+      </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\GramSchmidt.cs">
+        <Link>Solvers\OrthogonalSolvers\GramSchmidt.cs</Link>
+      </Compile>
       <Compile Include="..\NumericalAnalysis\Vector\Vector.cs">
         <Link>Vector\Vector.cs</Link>
       </Compile>	  

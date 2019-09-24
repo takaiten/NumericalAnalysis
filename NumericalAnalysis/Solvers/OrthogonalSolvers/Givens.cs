@@ -4,8 +4,11 @@ namespace ComMethods
 {
     public class Givens
     {
-        public static void Orthogon(Matrix A, Matrix Q, Matrix R)
+        public static void Orthogon(Matrix A, out Matrix Q, out Matrix R)
         {
+            Q = new Matrix(A);
+            R = new Matrix(A.Row, A.Column);
+            
             double help1, help2;
             double c = 0, s = 0;
             int n = A.Row;

@@ -83,6 +83,23 @@ namespace ComMethods
             Elem[secondIndex] = temp;
         }
 
+        public void CopyColumnFromMatrix(Matrix A, int column)
+        {
+            for (int i = 0; i < A.Row; i++) 
+                Elem[i] = A.Elem[i, column];
+        }
+        
+        public void CopyRowFromMatrix(Matrix A, int row)
+        {
+            for (int i = 0; i < A.Column; i++) 
+                Elem[i] = A.Elem[row, i];
+        }
+
+        public double Normal()
+        {
+            return Math.Sqrt(this*this);
+        }
+        
         // Operator overloads
         public static Vector operator *(Vector v, double x) // Mult vector by a scalar
         {
