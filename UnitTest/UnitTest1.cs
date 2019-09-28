@@ -3,6 +3,7 @@ using ComMethods;
 using NUnit.Framework;
 using ComMethods_Givens = ComMethods.Givens;
 using ComMethods_GramSchmidt = ComMethods.GramSchmidt;
+using ComMethods_Housholder = ComMethods.Housholder;
 
 namespace UnitTest
 {
@@ -367,8 +368,7 @@ namespace UnitTest
     [TestFixture]
     public class OrthogonalSolvers
     {
-        [TestCase(3)]
-        [TestCase(10)]
+        [TestCase(1)]
         public void When_Transpose_Q(int size)
         {
             // Arrange
@@ -385,20 +385,24 @@ namespace UnitTest
             ComMethods_GramSchmidt.Classic(A, out var Q1, out var R1);
             ComMethods_GramSchmidt.Modified(A, out var Q2, out var R2);
             ComMethods_Givens.Orthogon(A, out var Q3, out var R3);
+            ComMethods_Housholder.Orthogon(A, out var Q4, out var R4);
 
             Matrix QT1 = new Matrix(Q1);
             Matrix QT2 = new Matrix(Q2);
             Matrix QT3 = new Matrix(Q3);
+            Matrix QT4 = new Matrix(Q4);
 
             // Act
             QT1.Transpose();
             QT2.Transpose();
             QT3.Transpose();
+            QT4.Transpose();
 
             // Assert
             Assert.That(QT1 * Q1 == I);
             Assert.That(QT2 * Q2 == I);
             Assert.That(QT3 * Q3 == I);
+            Assert.That(QT4 * Q4 == I);
         }
 
         [TestCase(Author = "Artem")]
@@ -427,10 +431,12 @@ namespace UnitTest
             // Act
             Vector gramSchmidt = ComMethods_GramSchmidt.StartSolverQR(A, F);
             Vector givens = ComMethods_Givens.StartSolverQR(A, F);
+            Vector housholder = ComMethods_Housholder.StartSolverQR(A, F);
 
             // Assert
             Assert.That(A * gramSchmidt == F);
             Assert.That(A * givens == F);
+            Assert.That(A * housholder == F);
         }
     }
 }
