@@ -4,8 +4,16 @@ namespace ComMethods
 {
     public class Housholder
     {
-        public static void Orthogon(Matrix A, Matrix Q, Matrix R)   // Q = diag(1 .. 1)
+        public static void Orthogon(Matrix AOrig, out Matrix Q, out Matrix R)   // Q = diag(1 .. 1)
         {
+
+            Q = new Matrix(AOrig.Row, AOrig.Row);
+            for (int i = 0; i < AOrig.Row; i++)
+                Q.Elem[i, i] = 1;
+            R = new Matrix(AOrig.Row, AOrig.Row);
+
+            Matrix A = new Matrix(AOrig);
+
             Vector w = new Vector(A.Row);
             double beta, mu, s;
 
@@ -58,6 +66,18 @@ namespace ComMethods
             }
 
             R.Elem = A.Elem;
+        }
+        public static Vector StartSolverQR(Matrix A, Vector F)
+        {
+            Orthogon(A, out var Q, out var R);
+            Vector y = new Vector(Q.Column);
+            Vector x = new Vector(Q.Column);
+
+            Q.Transpose();
+            y = Q * F;
+            Substitution.BackRowSubstitution(R, y, x);
+
+            return x;
         }
     }
 }
