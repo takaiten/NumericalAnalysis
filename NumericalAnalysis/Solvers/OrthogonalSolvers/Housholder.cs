@@ -2,7 +2,7 @@
 
 namespace ComMethods
 {
-    class Housholder
+    public class Housholder
     {
         public static void Orthogon(Matrix A, Matrix Q, Matrix R)   // Q = diag(1 .. 1)
         {

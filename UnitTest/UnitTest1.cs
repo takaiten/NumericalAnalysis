@@ -325,7 +325,7 @@ namespace UnitTest
             Assert.That(rowNum == 2);
         }
     }
-    
+
     [TestFixture]
     public class DirectSolvers
     {
@@ -341,19 +341,19 @@ namespace UnitTest
             A.Elem[1, 0] = 1;
             A.Elem[1, 1] = -2;
             A.Elem[1, 2] = 1;
-            
+
             A.Elem[2, 0] = 1;
             A.Elem[2, 1] = 0;
             A.Elem[2, 2] = 2;
-            
+
             Vector F = new Vector(3);
             F.Elem[0] = 9;
             F.Elem[1] = 3;
             F.Elem[2] = 2;
 
             LUDecomposition lu = new LUDecomposition();
-            
-            
+
+
             // Act
             Vector luRes = lu.StartSolver(A, F);
             Vector gaussRes = Gauss.StartSolver(A, F);
@@ -362,7 +362,11 @@ namespace UnitTest
             Assert.That(A * luRes == F);
             Assert.That(A * gaussRes == F);
         }
+    }
 
+    [TestFixture]
+    public class OrthogonalSolvers
+    {
         [TestCase(3)]
         [TestCase(10)]
         public void When_Transpose_Q(int size)
@@ -380,16 +384,53 @@ namespace UnitTest
             
             ComMethods_GramSchmidt.Classic(A, out var Q1, out var R1);
             ComMethods_GramSchmidt.Modified(A, out var Q2, out var R2);
+            ComMethods_Givens.Orthogon(A, out var Q3, out var R3);
+
             Matrix QT1 = new Matrix(Q1);
             Matrix QT2 = new Matrix(Q2);
-            
+            Matrix QT3 = new Matrix(Q3);
+
             // Act
             QT1.Transpose();
             QT2.Transpose();
-            
+            QT3.Transpose();
+
             // Assert
             Assert.That(QT1 * Q1 == I);
             Assert.That(QT2 * Q2 == I);
+            Assert.That(QT3 * Q3 == I);
+        }
+
+        [TestCase(Author = "Artem")]
+        public void When_Solve_ORT()
+        {
+            // Arrange
+            Matrix A = new Matrix(3, 3);
+            A.Elem[0, 0] = 2;
+            A.Elem[0, 1] = 3;
+            A.Elem[0, 2] = -1;
+
+            A.Elem[1, 0] = 1;
+            A.Elem[1, 1] = -2;
+            A.Elem[1, 2] = 1;
+
+            A.Elem[2, 0] = 1;
+            A.Elem[2, 1] = 0;
+            A.Elem[2, 2] = 2;
+
+            Vector F = new Vector(3);
+            F.Elem[0] = 9;
+            F.Elem[1] = 3;
+            F.Elem[2] = 2;
+
+
+            // Act
+            Vector gramSchmidt = ComMethods_GramSchmidt.StartSolverQR(A, F);
+            Vector givens = ComMethods_Givens.StartSolverQR(A, F);
+
+            // Assert
+            Assert.That(A * gramSchmidt == F);
+            Assert.That(A * givens == F);
         }
     }
 }

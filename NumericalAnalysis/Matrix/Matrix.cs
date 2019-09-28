@@ -13,7 +13,7 @@ namespace ComMethods
     {
         public int Row { get; }
         public int Column { get; }
-        public double[,] Elem { get; }
+        public double[,] Elem { get; set; }
 
         public Matrix()
         {
