@@ -27,7 +27,9 @@ namespace ComMethods
                     }
 
                     Vector F = A * xTrue;
-                    Vector X = Gauss.StartSolver(A, F);
+                    //Vector X = Gauss.StartSolver(A, F);
+                    Vector X = Givens.StartSolverQR(A, F);
+                    //Vector X = GramSchmidt.StartSolverQR(A, F);
                 });
                 // TODO:
                 // Complete this part ???

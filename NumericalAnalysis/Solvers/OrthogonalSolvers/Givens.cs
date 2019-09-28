@@ -4,14 +4,17 @@ namespace ComMethods
 {
     public class Givens
     {
-        public static void Orthogon(Matrix A, out Matrix Q, out Matrix R)
+        public static void Orthogon(Matrix AOrig, out Matrix Q, out Matrix R)
         {
-            Q = new Matrix(A);
+            Matrix A = new Matrix(AOrig);
+            int n = A.Row;
+            Q = new Matrix(n, n);
+            for (int i = 0; i < n; i++)
+                Q.Elem[i, i] = 1;
             R = new Matrix(A.Row, A.Column);
             
             double help1, help2;
             double c = 0, s = 0;
-            int n = A.Row;
             
             for (int j = 0; j < n - 1; j++)
             {
@@ -39,6 +42,18 @@ namespace ComMethods
                     }
                 }
             }
+        }
+        public static Vector StartSolverQR(Matrix A, Vector F)
+        {
+            Orthogon(A, out var Q, out var R);
+            Vector y = new Vector(Q.Column);
+            Vector x = new Vector(Q.Column);
+
+            Q.Transpose();
+            y = Q * F;
+            Substitution.BackRowSubstitution(R, y, x);
+
+            return x;
         }
     }
 }

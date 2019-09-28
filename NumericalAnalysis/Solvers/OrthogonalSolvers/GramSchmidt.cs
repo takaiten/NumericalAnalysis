@@ -60,8 +60,9 @@ namespace ComMethods
             }
         }
         
-        public static Vector StartSolverQR(Matrix Q, Matrix R, Vector F)
+        public static Vector StartSolverQR(Matrix A, Vector F)
         {
+            Modified(A, out var Q, out var R);
             Vector y = new Vector(Q.Column);
             Vector x = new Vector(Q.Column);
             
