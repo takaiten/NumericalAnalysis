@@ -1,9 +1,6 @@
 using System;
 using ComMethods;
 using NUnit.Framework;
-using ComMethods_Givens = ComMethods.Givens;
-using ComMethods_GramSchmidt = ComMethods.GramSchmidt;
-using ComMethods_Housholder = ComMethods.Housholder;
 
 namespace UnitTest
 {
@@ -383,10 +380,10 @@ namespace UnitTest
                     A.Elem[i, j] = device.NextDouble();    
             }
             
-            ComMethods_GramSchmidt.Classic(A, out var Q1, out var R1);
-            ComMethods_GramSchmidt.Modified(A, out var Q2, out var R2);
-            ComMethods_Givens.Orthogon(A, out var Q3, out var R3);
-            ComMethods_Housholder.Orthogon(A, out var Q4, out var R4);
+            GramSchmidt.Classic(A, out var Q1, out var R1);
+            GramSchmidt.Modified(A, out var Q2, out var R2);
+            Givens.Orthogon(A, out var Q3, out var R3);
+            Householder.Orthogon(A, out var Q4, out var R4);
 
             Matrix QT1 = new Matrix(Q1);
             Matrix QT2 = new Matrix(Q2);
@@ -430,10 +427,10 @@ namespace UnitTest
 
 
             // Act
-            Vector gramSchmidtC = ComMethods_GramSchmidt.StartModifiedSolverQR(A, F);
-            Vector gramSchmidtM = ComMethods_GramSchmidt.StartModifiedSolverQR(A, F);
-            Vector givens = ComMethods_Givens.StartSolverQR(A, F);
-            Vector householder = ComMethods_Housholder.StartSolverQR(A, F);
+            Vector gramSchmidtC = GramSchmidt.StartModifiedSolverQR(A, F);
+            Vector gramSchmidtM = GramSchmidt.StartModifiedSolverQR(A, F);
+            Vector givens = Givens.StartSolverQR(A, F);
+            Vector householder = Householder.StartSolverQR(A, F);
 
             // Assert
             Assert.That(A * gramSchmidtC == F);

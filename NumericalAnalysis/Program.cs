@@ -30,7 +30,7 @@ namespace ComMethods
                     //Vector X = Gauss.StartSolver(A, F);
                     //Vector X = Givens.StartSolverQR(A, F);
                     //Vector X = GramSchmidt.StartSolverQR(A, F);
-                    Vector X = Housholder.StartSolverQR(A, F);
+                    Vector X = Householder.StartSolverQR(A, F);
                 });
                 // TODO:
                 // Complete this part ???
