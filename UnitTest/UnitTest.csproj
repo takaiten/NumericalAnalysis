@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -13,6 +13,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NumericalAnalysis\NumericalAnalysis.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\NumericalAnalysis\Consts\CONST.cs">
+        <Link>Consts\CONST.cs</Link>
+      </Compile>
+      <Compile Include="..\NumericalAnalysis\Matrix\CSlRMatrix.cs">
+        <Link>Matrix\CSlRMatrix.cs</Link>
+      </Compile>
       <Compile Include="..\NumericalAnalysis\Matrix\Matrix.cs">
         <Link>Matrix\Matrix.cs</Link>
       </Compile>
@@ -28,19 +38,15 @@
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Givens.cs">
         <Link>Solvers\OrthogonalSolvers\Givens.cs</Link>
       </Compile>
-	  <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Householder.cs">
-        <Link>Solvers\OrthogonalSolvers\Householder.cs</Link>
-      </Compile>
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\GramSchmidt.cs">
         <Link>Solvers\OrthogonalSolvers\GramSchmidt.cs</Link>
       </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Householder.cs">
+        <Link>Solvers\OrthogonalSolvers\Householder.cs</Link>
+      </Compile>
       <Compile Include="..\NumericalAnalysis\Vector\Vector.cs">
         <Link>Vector\Vector.cs</Link>
-      </Compile>	  
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\NumericalAnalysis\NumericalAnalysis.csproj" />
+      </Compile>
     </ItemGroup>
 
 </Project>
