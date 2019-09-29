@@ -368,7 +368,8 @@ namespace UnitTest
     [TestFixture]
     public class OrthogonalSolvers
     {
-        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(10)]
         public void When_Transpose_Q(int size)
         {
             // Arrange
@@ -417,7 +418,7 @@ namespace UnitTest
             A.Elem[1, 0] = 1;
             A.Elem[1, 1] = -2;
             A.Elem[1, 2] = 1;
-
+        
             A.Elem[2, 0] = 1;
             A.Elem[2, 1] = 0;
             A.Elem[2, 2] = 2;
@@ -429,14 +430,16 @@ namespace UnitTest
 
 
             // Act
-            Vector gramSchmidt = ComMethods_GramSchmidt.StartSolverQR(A, F);
+            Vector gramSchmidtC = ComMethods_GramSchmidt.StartModifiedSolverQR(A, F);
+            Vector gramSchmidtM = ComMethods_GramSchmidt.StartModifiedSolverQR(A, F);
             Vector givens = ComMethods_Givens.StartSolverQR(A, F);
-            Vector housholder = ComMethods_Housholder.StartSolverQR(A, F);
+            Vector householder = ComMethods_Housholder.StartSolverQR(A, F);
 
             // Assert
-            Assert.That(A * gramSchmidt == F);
+            Assert.That(A * gramSchmidtC == F);
+            Assert.That(A * gramSchmidtM == F);
             Assert.That(A * givens == F);
-            Assert.That(A * housholder == F);
+            Assert.That(A * householder == F);
         }
     }
 }
