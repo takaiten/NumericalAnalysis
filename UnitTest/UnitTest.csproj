@@ -28,8 +28,8 @@
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Givens.cs">
         <Link>Solvers\OrthogonalSolvers\Givens.cs</Link>
       </Compile>
-	  <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Housholder.cs">
-        <Link>Solvers\OrthogonalSolvers\Housholder.cs</Link>
+	  <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Householder.cs">
+        <Link>Solvers\OrthogonalSolvers\Householder.cs</Link>
       </Compile>
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\GramSchmidt.cs">
         <Link>Solvers\OrthogonalSolvers\GramSchmidt.cs</Link>
