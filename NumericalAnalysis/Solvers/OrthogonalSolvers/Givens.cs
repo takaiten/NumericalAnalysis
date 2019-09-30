@@ -10,7 +10,7 @@ namespace ComMethods
             int n = A.Row;
             Q = new Matrix(n, n);
             for (int i = 0; i < n; i++)
-                Q.Elem[i, i] = 1;
+                Q.Elem[i][i] = 1;
             R = new Matrix(A.Row, A.Column);
             
             double help1, help2;
@@ -20,25 +20,25 @@ namespace ComMethods
             {
                 for (int i = j + 1; i < n; i++)
                 {
-                    if (Math.Abs(A.Elem[i, j]) < CONST.EPS) continue;
-                    help1 = Math.Sqrt(Math.Pow(A.Elem[i, j], 2) + Math.Pow(A.Elem[j, j], 2));
-                    c = A.Elem[j, j] / help1;
-                    s = A.Elem[i, j] / help1;
+                    if (Math.Abs(A.Elem[i][j]) < CONST.EPS) continue;
+                    help1 = Math.Sqrt(Math.Pow(A.Elem[i][j], 2) + Math.Pow(A.Elem[j][j], 2));
+                    c = A.Elem[j][j] / help1;
+                    s = A.Elem[i][j] / help1;
                     for (int k = j; k < n; k++)
                     {
-                        help1 = c * A.Elem[j, k] + s * A.Elem[i, k];
-                        help2 = -s * A.Elem[j, k] + c * A.Elem[i, k];
+                        help1 = c * A.Elem[j][k] + s * A.Elem[i][k];
+                        help2 = -s * A.Elem[j][k] + c * A.Elem[i][k];
                         
-                        R.Elem[j, k] = help1; R.Elem[i, k] = help2;
-                        A.Elem[j, k] = help1; A.Elem[i, k] = help2;
+                        R.Elem[j][k] = help1; R.Elem[i][k] = help2;
+                        A.Elem[j][k] = help1; A.Elem[i][k] = help2;
                     }
 
                     for (int k = 0; k < n; k++)
                     {
-                        help1 = c * Q.Elem[k, j] + s * Q.Elem[k, i];
-                        help2 = -s * Q.Elem[k, j] + c * Q.Elem[k, i];
+                        help1 = c * Q.Elem[k][j] + s * Q.Elem[k][i];
+                        help2 = -s * Q.Elem[k][j] + c * Q.Elem[k][i];
                         
-                        Q.Elem[k, j] = help1; Q.Elem[k, i] = help2;
+                        Q.Elem[k][j] = help1; Q.Elem[k][i] = help2;
                     }
                 }
             }

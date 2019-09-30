@@ -15,19 +15,19 @@ namespace ComMethods
             {
                 for (int i = 0; i < j; i++)
                     for (int k = 0; k < A.Row; k++)
-                        R.Elem[i, j] += A.Elem[k, j] * Q.Elem[k, i];
+                        R.Elem[i][j] += A.Elem[k][j] * Q.Elem[k][i];
                 q.CopyColumnFromMatrix(A, j);
 
                 for (int i = 0; i < j; i++)
                     for (int k = 0; k < q.Size; k++)
-                        q.Elem[k] -= Q.Elem[k, i] * R.Elem[i, j];
+                        q.Elem[k] -= Q.Elem[k][i] * R.Elem[i][j];
 
-                R.Elem[j, j] = q.Normal();
+                R.Elem[j][j] = q.Normal();
 
-                if (R.Elem[j, j] < CONST.EPS) return;
+                if (R.Elem[j][j] < CONST.EPS) return;
 
                 for (int i = 0; i < A.Row; i++) 
-                    Q.Elem[i, j] = q.Elem[i] / R.Elem[j, j];
+                    Q.Elem[i][j] = q.Elem[i] / R.Elem[j][j];
             }
         }
 
@@ -45,18 +45,18 @@ namespace ComMethods
                 for (int i = 0; i < j; i++)
                 {
                     for (int k = 0; k < q.Size; k++) 
-                        R.Elem[i, j] += q.Elem[k] * Q.Elem[k, i];
+                        R.Elem[i][j] += q.Elem[k] * Q.Elem[k][i];
 
                     for (int k = 0; k < q.Size; k++) 
-                        q.Elem[k] -= R.Elem[i, j] * Q.Elem[k, i];
+                        q.Elem[k] -= R.Elem[i][j] * Q.Elem[k][i];
                 }
                 
-                R.Elem[j, j] = q.Normal();
+                R.Elem[j][j] = q.Normal();
 
-                if (R.Elem[j, j] < CONST.EPS) return;
+                if (R.Elem[j][j] < CONST.EPS) return;
                 
                 for (int i = 0; i < A.Row; i++) 
-                    Q.Elem[i, j] = q.Elem[i] / R.Elem[j, j];
+                    Q.Elem[i][j] = q.Elem[i] / R.Elem[j][j];
             }
         }
         

@@ -33,16 +33,16 @@ namespace ComMethods
                 {
                     _sum = 0;
                     for (int k = 0; k < i; k++)
-                        _sum += LU.Elem[i, k] * LU.Elem[k, j];
-                    LU.Elem[i, j] = A.Elem[i, j] - _sum;
+                        _sum += LU.Elem[i][k] * LU.Elem[k][j];
+                    LU.Elem[i][j] = A.Elem[i][j] - _sum;
                 }
 
                 for (int j = i + 1; j < _n; j++)
                 {
                     _sum = 0;
                     for (int k = 0; k < i; k++)
-                        _sum += LU.Elem[j, k] * LU.Elem[k, i];
-                    LU.Elem[j, i] = (1 / LU.Elem[i, i]) * (A.Elem[j, i] - _sum);
+                        _sum += LU.Elem[j][k] * LU.Elem[k][i];
+                    LU.Elem[j][i] = (1 / LU.Elem[i][i]) * (A.Elem[j][i] - _sum);
                 }
             }
         }
@@ -59,7 +59,7 @@ namespace ComMethods
             {
                 _sum = 0;
                 for (int k = 0; k < i; k++)
-                    _sum += LU.Elem[i, k] * y.Elem[k];
+                    _sum += LU.Elem[i][k] * y.Elem[k];
                 y.Elem[i] = F.Elem[i] - _sum;
             }
 
@@ -69,8 +69,8 @@ namespace ComMethods
             {
                 _sum = 0;
                 for (int k = i + 1; k < _n; k++)
-                    _sum += LU.Elem[i, k] * x.Elem[k];
-                x.Elem[i] = (1 / LU.Elem[i, i]) * (y.Elem[i] - _sum);
+                    _sum += LU.Elem[i][k] * x.Elem[k];
+                x.Elem[i] = (1 / LU.Elem[i][i]) * (y.Elem[i] - _sum);
             }
 
             return x;

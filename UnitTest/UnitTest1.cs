@@ -72,7 +72,7 @@ namespace UnitTest
 
             for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                trueRes.Elem[i, j] = 3;
+                trueRes.Elem[i][j] = 3;
 
             // Act and Assert
             Assert.That(a.MultColumnByRow(b) == trueRes);
@@ -141,8 +141,8 @@ namespace UnitTest
             // Act 
             for (int i = 0; i < 3; i++)
             {
-                A.Elem[i, i] = 1;
-                B.Elem[i, i] = 1;
+                A.Elem[i][i] = 1;
+                B.Elem[i][i] = 1;
             }
 
             // Assert
@@ -157,7 +157,7 @@ namespace UnitTest
             Matrix B = new Matrix(3, 3);
             // Act 
             for (int i = 0; i < 3; i++)
-                A.Elem[i, i] = 1;
+                A.Elem[i][i] = 1;
 
             // Assert
             Assert.That(A != B);
@@ -171,17 +171,17 @@ namespace UnitTest
             Vector v = new Vector(3);
             Vector trueRes = new Vector(3);
             
-            A.Elem[0, 0] = 2;
-            A.Elem[0, 1] = 3;
-            A.Elem[0, 2] = -1;
+            A.Elem[0][0] = 2;
+            A.Elem[0][1] = 3;
+            A.Elem[0][2] = -1;
 
-            A.Elem[1, 0] = 1;
-            A.Elem[1, 1] = -2;
-            A.Elem[1, 2] = 1;
+            A.Elem[1][0] = 1;
+            A.Elem[1][1] = -2;
+            A.Elem[1][2] = 1;
             
-            A.Elem[2, 0] = 1;
-            A.Elem[2, 1] = 0;
-            A.Elem[2, 2] = 2;
+            A.Elem[2][0] = 1;
+            A.Elem[2][1] = 0;
+            A.Elem[2][2] = 2;
 
             v.Elem[0] = 4;
             v.Elem[1] = 0;
@@ -190,17 +190,6 @@ namespace UnitTest
             trueRes.Elem[0] = 9;
             trueRes.Elem[1] = 3;
             trueRes.Elem[2] = 2;
-           
-            
-//            for (int i = 0; i < 3; i++)
-//            {
-//                v.Elem[i] = 3;
-//                for (int j = 0; j < 2; j++)
-//                    A.Elem[j, i] = 1;
-//            }
-//
-//            for (int i = 0; i < 2; i++)
-//                trueRes.Elem[i] = 9;
 
             // Act and Assert
             Assert.That(A * v == trueRes);
@@ -217,13 +206,13 @@ namespace UnitTest
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    A.Elem[i, j] = 1;
-                    B.Elem[j, i] = 3;
+                    A.Elem[i][j] = 1;
+                    B.Elem[j][i] = 3;
                 }
 
             for (int i = 0; i < 2; i++)
                 for (int j = 0; j < 2; j++)
-                    trueRes.Elem[i, j] = 9;
+                    trueRes.Elem[i][j] = 9;
 
             // Act and Assert
             Assert.That(A * B == trueRes);
@@ -239,11 +228,11 @@ namespace UnitTest
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    A.Elem[j, i] = 1;
+                    A.Elem[j][i] = 1;
                     if (j != 1)
-                        B.Elem[j, i] = 1;
+                        B.Elem[j][i] = 1;
                     else
-                        B.Elem[j, i] = 3;
+                        B.Elem[j][i] = 3;
                 }
 
             // Act 
@@ -263,11 +252,11 @@ namespace UnitTest
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    A.Elem[i, j] = 1;
+                    A.Elem[i][j] = 1;
                     if (j != 1)
-                        B.Elem[i, j] = 1;
+                        B.Elem[i][j] = 1;
                     else
-                        B.Elem[i, j] = 3;
+                        B.Elem[i][j] = 3;
                 }
 
             // Act 
@@ -287,8 +276,8 @@ namespace UnitTest
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    A.Elem[j, i] = 1;
-                    B.Elem[j, i] = 1;
+                    A.Elem[j][i] = 1;
+                    B.Elem[j][i] = 1;
                 }
 
             B.MultRowByConst(2, 3);
@@ -310,11 +299,11 @@ namespace UnitTest
 
             for (int i = 0; i < size; i++)
                 for (int j = 0; j < size; j++)
-                    A.Elem[i, j] = 1;
+                    A.Elem[i][j] = 1;
 
-            A.Elem[0, size - 1] = 10;
-            A.Elem[1, size - 1] = 15;
-            A.Elem[2, size - 1] = 16;
+            A.Elem[0][size - 1] = 10;
+            A.Elem[1][size - 1] = 15;
+            A.Elem[2][size - 1] = 16;
 
             // Act 
             int rowNum = A.RowNumOfMaxColumnElem(size - 1);
@@ -332,17 +321,17 @@ namespace UnitTest
         {
             // Arrange
             Matrix A = new Matrix(3, 3);
-            A.Elem[0, 0] = 2;
-            A.Elem[0, 1] = 3;
-            A.Elem[0, 2] = -1;
+            A.Elem[0][0] = 2;
+            A.Elem[0][1] = 3;
+            A.Elem[0][2] = -1;
 
-            A.Elem[1, 0] = 1;
-            A.Elem[1, 1] = -2;
-            A.Elem[1, 2] = 1;
+            A.Elem[1][0] = 1;
+            A.Elem[1][1] = -2;
+            A.Elem[1][2] = 1;
 
-            A.Elem[2, 0] = 1;
-            A.Elem[2, 1] = 0;
-            A.Elem[2, 2] = 2;
+            A.Elem[2][0] = 1;
+            A.Elem[2][1] = 0;
+            A.Elem[2][2] = 2;
 
             Vector F = new Vector(3);
             F.Elem[0] = 9;
@@ -375,9 +364,9 @@ namespace UnitTest
             Matrix I = new Matrix(size, size);
             for (int i = 0; i < size; i++)
             {
-                I.Elem[i, i] = 1;
+                I.Elem[i][i] = 1;
                 for (int j = 0; j < size; j++)
-                    A.Elem[i, j] = device.NextDouble();    
+                    A.Elem[i][j] = device.NextDouble();    
             }
             
             GramSchmidt.Classic(A, out var Q1, out var R1);
@@ -408,17 +397,17 @@ namespace UnitTest
         {
             // Arrange
             Matrix A = new Matrix(3, 3);
-            A.Elem[0, 0] = 2;
-            A.Elem[0, 1] = 3;
-            A.Elem[0, 2] = -1;
+            A.Elem[0][0] = 2;
+            A.Elem[0][1] = 3;
+            A.Elem[0][2] = -1;
 
-            A.Elem[1, 0] = 1;
-            A.Elem[1, 1] = -2;
-            A.Elem[1, 2] = 1;
+            A.Elem[1][0] = 1;
+            A.Elem[1][1] = -2;
+            A.Elem[1][2] = 1;
         
-            A.Elem[2, 0] = 1;
-            A.Elem[2, 1] = 0;
-            A.Elem[2, 2] = 2;
+            A.Elem[2][0] = 1;
+            A.Elem[2][1] = 0;
+            A.Elem[2][2] = 2;
 
             Vector F = new Vector(3);
             F.Elem[0] = 9;

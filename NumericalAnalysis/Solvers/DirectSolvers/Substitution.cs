@@ -13,15 +13,15 @@ namespace ComMethods
             //проход по строкам
             for (int i = 0; i < F.Size; i++)
             {
-                if (Math.Abs(A.Elem[i, i]) < CONST.EPS)
+                if (Math.Abs(A.Elem[i][i]) < CONST.EPS)
                     throw new Exception("Direct Row Substitution: division by 0...");
 
                 for (int j = 0; j < i; j++)
                 {
-                    RES.Elem[i] -= A.Elem[i, j] * RES.Elem[j];
+                    RES.Elem[i] -= A.Elem[i][j] * RES.Elem[j];
                 }
 
-                RES.Elem[i] /= A.Elem[i, i];
+                RES.Elem[i] /= A.Elem[i][i];
             }
         }
 
@@ -34,14 +34,14 @@ namespace ComMethods
             //проход по столбцам
             for (int j = 0; j < F.Size; j++)
             {
-                if (Math.Abs(A.Elem[j, j]) < CONST.EPS)
+                if (Math.Abs(A.Elem[j][j]) < CONST.EPS)
                     throw new Exception("Direct Column Substitution: division by 0...");
 
-                RES.Elem[j] /= A.Elem[j, j];
+                RES.Elem[j] /= A.Elem[j][j];
 
                 for (int i = j + 1; i < F.Size; i++)
                 {
-                    RES.Elem[i] -= A.Elem[i, j] * RES.Elem[j];
+                    RES.Elem[i] -= A.Elem[i][j] * RES.Elem[j];
                 }
             }
         }
@@ -55,15 +55,15 @@ namespace ComMethods
             //начинаем с последней строки, двигаясь вверх
             for (int i = F.Size - 1; i >= 0; i--)
             {
-                if (Math.Abs(A.Elem[i, i]) < CONST.EPS) throw new Exception("Back Row Substitution: division by 0... ");
+                if (Math.Abs(A.Elem[i][i]) < CONST.EPS) throw new Exception("Back Row Substitution: division by 0... ");
 
                 //двигаемся по столбцам
                 for (int j = i + 1; j < F.Size; j++)
                 {
-                    RES.Elem[i] -= A.Elem[i, j] * RES.Elem[j];
+                    RES.Elem[i] -= A.Elem[i][j] * RES.Elem[j];
                 }
 
-                RES.Elem[i] /= A.Elem[i, i];
+                RES.Elem[i] /= A.Elem[i][i];
             }
         }
 
@@ -76,15 +76,15 @@ namespace ComMethods
             //начинаем с последнего столбца, сдвигаясь влево
             for (int j = F.Size - 1; j >= 0; j--)
             {
-                if (Math.Abs(A.Elem[j, j]) < CONST.EPS)
+                if (Math.Abs(A.Elem[j][j]) < CONST.EPS)
                     throw new Exception("Back Column Substitution: division by 0...");
 
-                RES.Elem[j] /= A.Elem[j, j];
+                RES.Elem[j] /= A.Elem[j][j];
 
                 //двигаемся по строкам
                 for (int i = j - 1; i >= 0; i--)
                 {
-                    RES.Elem[i] -= A.Elem[i, j] * RES.Elem[j];
+                    RES.Elem[i] -= A.Elem[i][j] * RES.Elem[j];
                 }
             }
         }

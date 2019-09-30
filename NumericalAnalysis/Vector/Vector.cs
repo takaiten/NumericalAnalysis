@@ -45,7 +45,7 @@ namespace ComMethods
             Matrix res = new Matrix(Size, Size);
             for (int i = 0; i < Size; i++)
             for (int j = 0; j < Size; j++)
-                res.Elem[i, j] = Elem[i] * r.Elem[j];
+                res.Elem[i][j] = Elem[i] * r.Elem[j];
 
             return res;
         }
@@ -86,13 +86,13 @@ namespace ComMethods
         public void CopyColumnFromMatrix(Matrix A, int column)
         {
             for (int i = 0; i < A.Row; i++) 
-                Elem[i] = A.Elem[i, column];
+                Elem[i] = A.Elem[i][column];
         }
         
         public void CopyRowFromMatrix(Matrix A, int row)
         {
             for (int i = 0; i < A.Column; i++) 
-                Elem[i] = A.Elem[row, i];
+                Elem[i] = A.Elem[row][i];
         }
 
         public double Normal()
