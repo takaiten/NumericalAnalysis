@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading;
 
 namespace ComMethods
@@ -10,55 +11,78 @@ namespace ComMethods
         {
             try
             {
-                const int size = 300;
+                const int size = 500;
                 Matrix A = new Matrix(size, size);
-
-                Vector F = new Vector(size);
-                Random device = new Random();
+                Vector xTrue = new Vector(size);
+                
                 for (int i = 0; i < size; i++)
                 {
-                    F.Elem[i] = device.NextDouble();
-                    for (int j = 0; j < size; j++)
-                        A.Elem[i, j] = device.NextDouble();
+                    A.Elem[i, i] = 10;
+                    xTrue.Elem[i] = 1;
+                    for (int j = i + 1; j < size; j++)
+                    {
+                        A.Elem[i, j] = 0.01 * (i + j + 1);
+                        A.Elem[j, i] = -0.01 * (i + j + 1);
+                    }
                 }
+
+                Vector F = A * xTrue;
+                Vector X = new Vector();
                 
                 LUDecomposition lu = new LUDecomposition();
-                var LU = new Thread(() =>
+                var LU = new Action(() =>
                 {
-                    Vector X = lu.StartSolver(A, F);
-                });
-                
-                var GAUSS = new Thread(() =>
-                {
-                    Vector X = Gauss.StartSolver(A, F);
-                });
-                
-                var ClassicGS = new Thread(() =>
-                {
-                    Vector X = GramSchmidt.StartClassicSolverQR(A, F);
-                });
-
-                var ModifiedGS = new Thread(() =>
-                {
-                    Vector X = GramSchmidt.StartModifiedSolverQR(A, F);
-                });
-
-                var GIVENS = new Thread(() =>
-                {
-                    Vector X = Givens.StartSolverQR(A, F);
-                });
-
-                var HOUSEHOLDER = new Thread(() =>
-                {
-                    Vector X = Householder.StartSolverQR(A, F);
+                    X = lu.StartSolver(A, F);
                 });
                 
                 Console.WriteLine("LU Decomposition " + CONST.MeasureTime(LU));
-                Console.WriteLine("Gauss " + CONST.MeasureTime(GAUSS));
-                Console.WriteLine("Classic Gram-Schmidt " + CONST.MeasureTime(ClassicGS));
-                Console.WriteLine("Modified Gram-Schmidt " + CONST.MeasureTime(ModifiedGS));
-                Console.WriteLine("Givens " + CONST.MeasureTime(GIVENS));
-                Console.WriteLine("Householder " + CONST.MeasureTime(HOUSEHOLDER));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                
+                var GAUSS = new Action(() =>
+                {
+                    X = Gauss.StartSolver(A, F);
+                });
+                
+                Console.WriteLine("\nGauss " + CONST.MeasureTime(GAUSS));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                
+                var ClassicGS = new Action(() =>
+                {
+                    X = GramSchmidt.StartClassicSolverQR(A, F);
+                });
+
+                Console.WriteLine("\nClassic Gram-Schmidt " + CONST.MeasureTime(ClassicGS));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                
+                var ModifiedGS = new Action(() =>
+                {
+                    X = GramSchmidt.StartModifiedSolverQR(A, F);
+                });
+
+                Console.WriteLine("\nModified Gram-Schmidt " + CONST.MeasureTime(ModifiedGS));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                
+                var GIVENS = new Action(() =>
+                {
+                    X = Givens.StartSolverQR(A, F);
+                });
+                
+                Console.WriteLine("\nGivens " + CONST.MeasureTime(GIVENS));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                
+                var HOUSEHOLDER = new Action(() =>
+                {
+                    X = Householder.StartSolverQR(A, F);
+                });
+                
+                Console.WriteLine("\nHouseholder " + CONST.MeasureTime(HOUSEHOLDER));
+                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
             }
             catch (Exception e)
             {

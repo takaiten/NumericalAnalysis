@@ -5,23 +5,18 @@ using System.Threading;
 
 namespace ComMethods
 {
-    public class CONST
+    public static class CONST
     {
-        public static double EPS = 1e-9;
-
-        public static string MeasureTime(Thread thread)
+        public static readonly double EPS = 1e-8;
+        
+        public static string MeasureTime(Action action)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            thread.Start();
-            while (thread.IsAlive)
-            {
-            }
-
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            action();
             stopwatch.Stop();
+
             TimeSpan ts = stopwatch.Elapsed;
-            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            string elapsedTime = $"{ts.Hours:00}:{ts.Minutes:00}:{ts.Seconds:00}.{ts.Milliseconds / 10:00}";
 
             return ("RunTime: " + elapsedTime);
         }
