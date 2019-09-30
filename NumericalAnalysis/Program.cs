@@ -17,12 +17,12 @@ namespace ComMethods
                 
                 for (int i = 0; i < size; i++)
                 {
-                    A.Elem[i, i] = 10;
+                    A.Elem[i][i] = 10;
                     xTrue.Elem[i] = 1;
                     for (int j = i + 1; j < size; j++)
                     {
-                        A.Elem[i, j] = 0.01 * (i + j + 1);
-                        A.Elem[j, i] = -0.01 * (i + j + 1);
+                        A.Elem[i][j] = 0.01 * (i + j + 1);
+                        A.Elem[j][i] = -0.01 * (i + j + 1);
                     }
                 }
 

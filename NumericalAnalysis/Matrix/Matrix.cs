@@ -13,7 +13,7 @@ namespace ComMethods
     {
         public int Row { get; }
         public int Column { get; }
-        public double[,] Elem { get; set; }
+        public double[][] Elem { get; set; }
 
         public Matrix()
         {
@@ -23,17 +23,22 @@ namespace ComMethods
         {
             Row = row;
             Column = column;
-            Elem = new double[row, column];
+            Elem = new double[row][];
+			for (int i = 0; i < row; i++)
+				Elem[i] = new double[column];
         }
 
         public Matrix(Matrix inp)
         {
             Row = inp.Row;
             Column = inp.Column;
-            Elem = new double[Row, Column];
+            Elem = new double[Row][];
+            for (int i = 0; i < Row; i++)
+                Elem[i] = new double[Column];
+            
             for (int i = 0; i < Row; i++)
             for (int j = 0; j < Column; j++)
-                Elem[i, j] = inp.Elem[i, j];
+                Elem[i][j] = inp.Elem[i][j];
         }
 
         // Methods 
@@ -43,7 +48,7 @@ namespace ComMethods
             {
                 for (int j = 0; j < Row; j++)
                 {
-                    Console.Write(Elem[i, j]);
+                    Console.Write(Elem[i][j]);
                     Console.Write('\t');
                 }
 
@@ -54,13 +59,13 @@ namespace ComMethods
         public void MultRowByConst(int row, double c)
         {
             for (int i = 0; i < Column; i++)
-                Elem[row, i] *= c;
+                Elem[row][i] *= c;
         }
 
         public void MultColumnByConst(int column, double c)
         {
             for (int i = 0; i < Row; i++)
-                Elem[i, column] *= c;
+                Elem[i][column] *= c;
         }
 
         public int RowNumOfMaxColumnElem(int column)
@@ -72,10 +77,10 @@ namespace ComMethods
             int rowNum = 0;
 
             for (int i = 0; i < Row; i++)
-                if (Elem[i, column] > max)
+                if (Elem[i][column] > max)
                 {
                     rowNum = i;
-                    max = Elem[i, column];
+                    max = Elem[i][column];
                 }
 
             return rowNum;
@@ -88,9 +93,9 @@ namespace ComMethods
 
             for (int i = 0; i < Column; i++)
             {
-                double tmp = Elem[r1, i];
-                Elem[r1, i] = Elem[r2, i];
-                Elem[r2, i] = tmp;
+                double tmp = Elem[r1][i];
+                Elem[r1][i] = Elem[r2][i];
+                Elem[r2][i] = tmp;
             }
         }
 
@@ -106,9 +111,9 @@ namespace ComMethods
             for (int i = 0; i < Row; i++)
                 for (int j = i + 1; j < Column; j++)
                 {
-                    temp = Elem[i, j];
-                    Elem[i, j] = Elem[j, i];
-                    Elem[j, i] = temp;
+                    temp = Elem[i][j];
+                    Elem[i][j] = Elem[j][i];
+                    Elem[j][i] = temp;
                 }
         }
         
@@ -122,7 +127,7 @@ namespace ComMethods
 
             for (int i = 0; i < M.Row; i++)
             for (int j = 0; j < M.Column; j++)
-                result.Elem[i] += M.Elem[i, j] * V.Elem[j];
+                result.Elem[i] += M.Elem[i][j] * V.Elem[j];
 
             return result;
         }
@@ -137,7 +142,7 @@ namespace ComMethods
             for (int i = 0; i < A.Row; i++)
             for (int j = 0; j < B.Column; j++)
             for (int k = 0; k < A.Column; k++)
-                result.Elem[i, j] += A.Elem[i, k] * B.Elem[k, j];
+                result.Elem[i][j] += A.Elem[i][k] * B.Elem[k][j];
 
             return result;
         }
@@ -160,7 +165,7 @@ namespace ComMethods
             bool isEqual = true;
             for (int i = 0; i < this.Row; i++)
             for (int j = 0; j < this.Column; j++)
-                isEqual &= Math.Abs(this.Elem[i, j] - other.Elem[i, j]) < CONST.EPS;
+                isEqual &= Math.Abs(this.Elem[i][j] - other.Elem[i][j]) < CONST.EPS;
 
             return isEqual;
         }

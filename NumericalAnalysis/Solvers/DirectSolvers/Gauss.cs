@@ -10,10 +10,10 @@ namespace ComMethods
         {
             int index = j;
             for (int i = j + 1; i < A.Row; i++)
-                if (Math.Abs(A.Elem[i, j]) > Math.Abs(A.Elem[index, j]))
+                if (Math.Abs(A.Elem[i][j]) > Math.Abs(A.Elem[index][j]))
                     index = i;
 
-            if (Math.Abs(A.Elem[index, j]) < CONST.EPS)
+            if (Math.Abs(A.Elem[index][j]) < CONST.EPS)
                 throw new Exception("GAUSS:GetLeadElemIndex: Matrix is singular");
 
             return index;
@@ -34,10 +34,10 @@ namespace ComMethods
 
                 for (int j = i + 1; j < A.Row; j++)
                 {
-                    help = A.Elem[j, i] / A.Elem[i, i];
-                    A.Elem[j, i] = 0;
+                    help = A.Elem[j][i] / A.Elem[i][i];
+                    A.Elem[j][i] = 0;
                     for (int k = i + 1; k < A.Column; k++)
-                        A.Elem[j, k] -= help * A.Elem[i, k];
+                        A.Elem[j][k] -= help * A.Elem[i][k];
                     F.Elem[j] -= help * F.Elem[i];
                 }
             }
@@ -56,10 +56,10 @@ namespace ComMethods
 
                 for (int j = i + 1; j < A.Row; j++)
                 {
-                    help = A.Elem[j, i] / A.Elem[i, i];
-                    A.Elem[j, i] = 0.0f;
+                    help = A.Elem[j][i] / A.Elem[i][i];
+                    A.Elem[j][i] = 0.0f;
                     for (int k = i + 1; k < A.Column; k++)
-                        A.Elem[j, k] -= help * A.Elem[j, k];
+                        A.Elem[j][k] -= help * A.Elem[j][k];
                 }
             }
         }
