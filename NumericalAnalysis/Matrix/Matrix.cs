@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 
 namespace ComMethods
 {
@@ -39,6 +41,34 @@ namespace ComMethods
             for (int i = 0; i < Row; i++)
             for (int j = 0; j < Column; j++)
                 Elem[i][j] = inp.Elem[i][j];
+        }
+
+        public Matrix(string Path)
+        {
+            using(var Reader = new BinaryReader(File.Open(Path + "Size.bin", FileMode.Open)))
+            {
+                try
+                {
+                    Row = Reader.ReadInt32();
+                    Column = Row;
+                }
+                catch { throw new Exception("Size.bin: file isn't correct"); }
+            }
+
+            using (var Reader = new BinaryReader(File.Open(Path + "Matrix.bin", FileMode.Open)))
+            {
+                try
+                {
+                    for (int i = 0; i < Row; i++)
+                    {
+                        Elem[i] = new double[Column];
+                        for (int j = 0; j < Column; j++)
+                            Elem[i][j] = Reader.ReadDouble();
+                    }
+                }
+
+                catch { throw new Exception("Matrix.bin: file isn't correct"); }
+            }
         }
 
         // Methods 
@@ -104,17 +134,81 @@ namespace ComMethods
             return new Matrix(this);
         }
 
-        public void Transpose()
+        public Matrix Transpose()
         {
-            double temp;
+            Matrix res = new Matrix(Row, Column);
 
             for (int i = 0; i < Row; i++)
                 for (int j = i + 1; j < Column; j++)
                 {
-                    temp = Elem[i][j];
-                    Elem[i][j] = Elem[j][i];
-                    Elem[j][i] = temp;
+                    res.Elem[i][j] = Elem[j][i];
                 }
+            return res;
+        }
+
+        delegate void ThreadSolver(int number);
+        public double CondSquareMatrix()
+        {
+            if (Row != Column)
+                throw new Exception("Row != Column");
+
+            var QRSolver = new QRDecomposition(Transpose(), QRDecomposition.QRAlgorithm.Householder);
+
+            int numberThreads = Environment.ProcessorCount;
+            var semaphores = new bool[numberThreads];
+
+            var normaRowA = new double[numberThreads];
+            var normaRowA1 = new double[numberThreads];
+
+            var StartSolver = new ThreadSolver(number =>
+            {
+                var A1 = new Vector(Row);
+                double S1, S2;
+
+                int begin = Column / numberThreads * number;
+                int end = begin + Column / numberThreads;
+
+                if (number + 1 == numberThreads)
+                    end += Column % numberThreads;
+
+                for (int i = begin; i < end; i++)
+                {
+                    A1.Elem[i] = 1.0;
+                    A1 = QRSolver.StartSolver(A1);
+
+                    S1 = 0; S2 = 0;
+
+                    for (int j = 0; j < Row; j++)
+                    {
+                        S1 += Math.Abs(Elem[i][j]);
+                        S2 += Math.Abs(A1.Elem[j]);
+                        A1.Elem[j] = 0;
+                    }
+
+                    normaRowA[number] = normaRowA[number] < S1 ? S1 : normaRowA[number];
+                    normaRowA1[number] = normaRowA1[number] < S2 ? S2 : normaRowA1[number];
+                }
+
+                semaphores[number] = true;
+            });
+
+            for (int I = 0; I < numberThreads - 1; I++)
+            {
+                int number = numberThreads - I - 1;
+                ThreadPool.QueueUserWorkItem(par => StartSolver(number));
+            }
+
+            StartSolver(0);
+
+            while (Array.IndexOf<bool>(semaphores, false) != -1);
+
+            for (int i = 1; i < numberThreads; i++)
+            {
+                normaRowA[0] = normaRowA[0] < normaRowA[i] ? normaRowA[i] : normaRowA[0];
+                normaRowA1[0] = normaRowA1[0] < normaRowA1[i] ? normaRowA1[i] : normaRowA1[0];
+            }
+
+            return normaRowA[0] * normaRowA1[0];
         }
         
         // Operator overloads

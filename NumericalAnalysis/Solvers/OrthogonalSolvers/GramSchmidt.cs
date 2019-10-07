@@ -66,7 +66,7 @@ namespace ComMethods
             Vector y = new Vector(Q.Column);
             Vector x = new Vector(Q.Column);
             
-            Q.Transpose();
+            Q = Q.Transpose();
             y = Q * F;
             Substitution.BackRowSubstitution(R, y, x);
 
@@ -79,7 +79,7 @@ namespace ComMethods
             Vector y = new Vector(Q.Column);
             Vector x = new Vector(Q.Column);
             
-            Q.Transpose();
+            Q = Q.Transpose();
             y = Q * F;
             Substitution.BackRowSubstitution(R, y, x);
 

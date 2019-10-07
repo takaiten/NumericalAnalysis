@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace ComMethods
 {
@@ -28,6 +29,33 @@ namespace ComMethods
             Elem = new double[Size];
             for (int i = 0; i < Size; i++)
                 Elem[i] = inp.Elem[i];
+        }
+
+        public Vector(string Path)
+        {
+            using (var Reader = new BinaryReader(File.Open(Path + "Size.bin", FileMode.Open)))
+            {
+                try
+                {
+                    Size = Reader.ReadInt32();
+                }
+                catch { throw new Exception("Size.bin: file isn't correct"); }
+            }
+
+            using (var Reader = new BinaryReader(File.Open(Path + "F.bin", FileMode.Open)))
+            {
+                try
+                {
+                    for (int i = 0; i < Size; i++)
+                    {
+                        Elem[i] = new double();
+                        Elem[i] = Reader.ReadDouble();
+
+                    }
+                }
+
+                catch { throw new Exception("F.bin: file isn't correct"); }
+            }
         }
 
         // Methods
