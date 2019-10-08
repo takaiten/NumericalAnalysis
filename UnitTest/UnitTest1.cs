@@ -313,7 +313,7 @@ namespace UnitTest
         }
     }
 
-    [TestFixture]
+    [TestFixture(Ignore = "Outdated")]
     public class DirectSolvers
     {
         [TestCase(Author = "Oleg")]
@@ -351,7 +351,7 @@ namespace UnitTest
         }
     }
 
-    [TestFixture]
+    [TestFixture(Ignore = "Outdated")]
     public class OrthogonalSolvers
     {
         [TestCase(3)]
@@ -426,6 +426,21 @@ namespace UnitTest
             Assert.That(A * gramSchmidtM == F);
             Assert.That(A * givens == F);
             Assert.That(A * householder == F);
+        }
+    }
+
+    [TestFixture]
+    public class IterationSolvers
+    {
+        [TestCase(Author = "Oleg")]
+        public void When_Test_Jacobi()
+        {
+            // Arrange
+            string path = "../Systems/System3";
+            Matrix A = new Matrix(path);
+            Vector F = new Vector(path);
+            
+            var sor = new SOR(100, 1e-8);
         }
     }
 }

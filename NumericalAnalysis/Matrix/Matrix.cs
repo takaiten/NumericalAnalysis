@@ -43,19 +43,19 @@ namespace ComMethods
                 Elem[i][j] = inp.Elem[i][j];
         }
 
-        public Matrix(string Path)
+        public Matrix(string path)
         {
-            using(var Reader = new BinaryReader(File.Open(Path + "Size.bin", FileMode.Open)))
+            using(var reader = new BinaryReader(File.Open(path + "Size.bin", FileMode.Open)))
             {
                 try
                 {
-                    Row = Reader.ReadInt32();
+                    Row = reader.ReadInt32();
                     Column = Row;
                 }
                 catch { throw new Exception("Size.bin: file isn't correct"); }
             }
 
-            using (var Reader = new BinaryReader(File.Open(Path + "Matrix.bin", FileMode.Open)))
+            using (var reader = new BinaryReader(File.Open(path + "Matrix.bin", FileMode.Open)))
             {
                 try
                 {
@@ -63,7 +63,7 @@ namespace ComMethods
                     {
                         Elem[i] = new double[Column];
                         for (int j = 0; j < Column; j++)
-                            Elem[i][j] = Reader.ReadDouble();
+                            Elem[i][j] = reader.ReadDouble();
                     }
                 }
 
@@ -200,7 +200,7 @@ namespace ComMethods
 
             StartSolver(0);
 
-            while (Array.IndexOf<bool>(semaphores, false) != -1);
+            while (Array.IndexOf<bool>(semaphores, false) != -1) {}
 
             for (int i = 1; i < numberThreads; i++)
             {
