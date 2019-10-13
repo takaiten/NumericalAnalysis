@@ -46,14 +46,10 @@ namespace ComMethods
             {
                 try
                 {
+                    Elem = new double[Size];
                     for (int i = 0; i < Size; i++)
-                    {
-                        Elem[i] = new double();
                         Elem[i] = Reader.ReadDouble();
-
-                    }
                 }
-
                 catch { throw new Exception("F.bin: file isn't correct"); }
             }
         }

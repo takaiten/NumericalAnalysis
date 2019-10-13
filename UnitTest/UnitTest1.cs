@@ -351,7 +351,7 @@ namespace UnitTest
         }
     }
 
-    [TestFixture(Ignore = "Outdated")]
+    [TestFixture(Author = "Oleg")]
     public class OrthogonalSolvers
     {
         [TestCase(3)]
@@ -369,21 +369,30 @@ namespace UnitTest
                     A.Elem[i][j] = device.NextDouble();    
             }
             
-            GramSchmidt.Classic(A, out var Q1, out var R1);
-            GramSchmidt.Modified(A, out var Q2, out var R2);
-            Givens.Orthogon(A, out var Q3, out var R3);
-            Householder.Orthogon(A, out var Q4, out var R4);
-
-            Matrix QT1 = new Matrix(Q1);
-            Matrix QT2 = new Matrix(Q2);
-            Matrix QT3 = new Matrix(Q3);
-            Matrix QT4 = new Matrix(Q4);
+            Matrix Q1 = new Matrix(A.Row, A.Column);
+            Matrix R1 = new Matrix(A.Row, A.Column);
+            
+            Matrix Q2 = new Matrix(A.Row, A.Column);
+            Matrix R2 = new Matrix(A.Row, A.Column);
+            
+            Matrix Q3 = new Matrix(A.Row, A.Column);
+            Matrix R3 = new Matrix(A.Row, A.Column);
+            for (int i = 0; i < A.Row; i++) Q3.Elem[i][i] = 1.0;
+            
+            Matrix Q4 = new Matrix(A.Row, A.Column);
+            Matrix R4 = new Matrix(A.Row, A.Column);
+            for (int i = 0; i < A.Row; i++) Q4.Elem[i][i] = 1.0;
+            
+            GramSchmidt.Classic(A, Q1, R1);
+            GramSchmidt.Modified(A, Q2, R2);
+            Givens.Orthogon(A, Q3, R3);
+            Householder.Orthogon(A, Q4, R4);
 
             // Act
-            QT1.Transpose();
-            QT2.Transpose();
-            QT3.Transpose();
-            QT4.Transpose();
+            Matrix QT1 = Q1.Transpose();
+            Matrix QT2 = Q2.Transpose();
+            Matrix QT3 = Q3.Transpose();
+            Matrix QT4 = Q4.Transpose();
 
             // Assert
             Assert.That(QT1 * Q1 == I);

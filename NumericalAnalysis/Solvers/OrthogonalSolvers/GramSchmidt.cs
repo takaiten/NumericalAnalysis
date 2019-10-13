@@ -4,11 +4,11 @@ namespace ComMethods
 {
     public class GramSchmidt
     {
-        public static void Classic(Matrix A, out Matrix Q, out Matrix R)
+        public static void Classic(Matrix A, Matrix Q, Matrix R)
         {
             int n = A.Row;
-            Q = new Matrix(n, n);
-            R = new Matrix(n, n);
+//            Q = new Matrix(n, n);
+//            R = new Matrix(n, n);
             Vector q = new Vector(n);
 
             for (int j = 0; j < A.Column; j++)
@@ -31,11 +31,11 @@ namespace ComMethods
             }
         }
 
-        public static void Modified(Matrix A, out Matrix Q, out Matrix R)
+        public static void Modified(Matrix A, Matrix Q, Matrix R)
         {
             int n = A.Row;
-            Q = new Matrix(n, n);
-            R = new Matrix(n, n);
+//            Q = new Matrix(n, n);
+//            R = new Matrix(n, n);
             Vector q = new Vector(n);
 
             for (int j = 0; j < A.Column; j++)
@@ -62,7 +62,11 @@ namespace ComMethods
         
         public static Vector StartModifiedSolverQR(Matrix A, Vector F)
         {
-            Modified(A, out var Q, out var R);
+            Matrix R = new Matrix(A.Row, A.Column);
+            Matrix Q = new Matrix(A.Row, A.Column);
+//            for (int i = 0; i < A.Row; i++) Q.Elem[i][i] = 1.0;
+            
+            Modified(A, Q, R);
             Vector y = new Vector(Q.Column);
             Vector x = new Vector(Q.Column);
             
@@ -75,7 +79,11 @@ namespace ComMethods
         
         public static Vector StartClassicSolverQR(Matrix A, Vector F)
         {
-            Classic(A, out var Q, out var R);
+            Matrix R = new Matrix(A.Row, A.Column);
+            Matrix Q = new Matrix(A.Row, A.Column);
+//            for (int i = 0; i < A.Row; i++) Q.Elem[i][i] = 1.0;
+            
+            Classic(A, Q, R);
             Vector y = new Vector(Q.Column);
             Vector x = new Vector(Q.Column);
             

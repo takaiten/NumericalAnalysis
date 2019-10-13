@@ -11,33 +11,20 @@ namespace ComMethods
         {
             try
             {
-                const int size = 500;
-                Matrix A = new Matrix(size, size);
-                Vector xTrue = new Vector(size);
+                Matrix A = new Matrix("./SLE/");
+                Vector F = new Vector(Environment.CurrentDirectory.ToString() + "./SLE/");
                 
-                for (int i = 0; i < size; i++)
-                {
-                    A.Elem[i][i] = 10;
-                    xTrue.Elem[i] = 1;
-                    for (int j = i + 1; j < size; j++)
-                    {
-                        A.Elem[i][j] = 0.01 * (i + j + 1);
-                        A.Elem[j][i] = -0.01 * (i + j + 1);
-                    }
-                }
+                int mu = 10000;
+                
+                A.MultDiagByConst(mu);
+                
+                Console.WriteLine("Disturbance parameter: " + mu.ToString("g2"));
+                Console.WriteLine("Condition number: " + A.CondSquareMatrix().ToString("g2"));
 
-                Vector F = A * xTrue;
+                int maxIter = 100;
+                double eps = 1e-8;
+
                 Vector X = new Vector();
-                
-                LUDecomposition lu = new LUDecomposition();
-                var LU = new Action(() =>
-                {
-                    X = lu.StartSolver(A, F);
-                });
-                
-                Console.WriteLine("LU Decomposition " + CONST.MeasureTime(LU));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
                 
                 var GAUSS = new Action(() =>
                 {
@@ -45,43 +32,34 @@ namespace ComMethods
                 });
                 
                 Console.WriteLine("\nGauss " + CONST.MeasureTime(GAUSS));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
-                
-                var ClassicGS = new Action(() =>
-                {
-                    X = GramSchmidt.StartClassicSolverQR(A, F);
-                });
 
-                Console.WriteLine("\nClassic Gram-Schmidt " + CONST.MeasureTime(ClassicGS));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Jacobi J = new Jacobi(maxIter, eps);
+                var JACOBI = new Action(() =>
+                {
+                    X = J.StartSolver(A, F);
+                });
+                
+                Console.WriteLine("\nJacobi " + CONST.MeasureTime(JACOBI));
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
                 
-                var ModifiedGS = new Action(() =>
+                SOR S = new SOR(maxIter, eps);
+                var GaussSeidel = new Action(() =>
                 {
-                    X = GramSchmidt.StartModifiedSolverQR(A, F);
+                    X = S.StartSolver(A, F, 1);
                 });
+                
+                Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GaussSeidel));
+                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
 
-                Console.WriteLine("\nModified Gram-Schmidt " + CONST.MeasureTime(ModifiedGS));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                double relaxParam = 2 / (1 + Math.Sqrt(1 - Math.Pow(A.Spectrum(), 2)));
                 
-                var GIVENS = new Action(() =>
+                var RELAXATION = new Action(() =>
                 {
-                    X = Givens.StartSolverQR(A, F);
+                    X = S.StartSolver(A, F, relaxParam);
                 });
                 
-                Console.WriteLine("\nGivens " + CONST.MeasureTime(GIVENS));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
-                
-                var HOUSEHOLDER = new Action(() =>
-                {
-                    X = Householder.StartSolverQR(A, F);
-                });
-                
-                Console.WriteLine("\nHouseholder " + CONST.MeasureTime(HOUSEHOLDER));
-                Console.WriteLine("Error: " + CONST.RelativeError(X, xTrue).ToString("g2"));
+                Console.WriteLine("\nSOR " + CONST.MeasureTime(RELAXATION));
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
             }
             catch (Exception e)

@@ -59,6 +59,7 @@ namespace ComMethods
             {
                 try
                 {
+                    Elem = new double[Row][];
                     for (int i = 0; i < Row; i++)
                     {
                         Elem[i] = new double[Column];
@@ -98,6 +99,13 @@ namespace ComMethods
                 Elem[i][column] *= c;
         }
 
+        public void MultDiagByConst(int c)
+        {
+            if (Row == Column)
+                for (int i = 0; i < Row; i++)
+                    Elem[i][i] *= c;
+        }
+        
         public int RowNumOfMaxColumnElem(int column)
         {
             if (column >= Column || column < 0)
@@ -116,6 +124,17 @@ namespace ComMethods
             return rowNum;
         }
 
+        public double Spectrum()
+        {
+            double spectr = 0;
+            
+            for (int i = 0; i < Row; i++)
+                for (int j = 0; j < Column; j++)
+                    spectr = spectr < Math.Abs(Elem[i][j]) ? Math.Abs(Elem[i][j]) : spectr;
+
+            return spectr;
+        }
+        
         public void SwitchRows(int r1, int r2)
         {
             if (r1 >= Row || r1 < 0 || r2 >= Row || r2 < 0)
@@ -137,12 +156,11 @@ namespace ComMethods
         public Matrix Transpose()
         {
             Matrix res = new Matrix(Row, Column);
-
+            
             for (int i = 0; i < Row; i++)
-                for (int j = i + 1; j < Column; j++)
-                {
+                for (int j = 0; j < Column; j++)
                     res.Elem[i][j] = Elem[j][i];
-                }
+            
             return res;
         }
 

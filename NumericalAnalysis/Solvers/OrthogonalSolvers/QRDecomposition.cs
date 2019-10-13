@@ -31,8 +31,8 @@ namespace ComMethods
         /// <param name="Method - метод QR-декомпозиции"></param>
         public QRDecomposition(Matrix A, QRAlgorithm Method)
         {
-            //R = new Matrix(A.Row, A.Column);
-            //Q = new Matrix(A.Row, A.Column);
+            R = new Matrix(A.Row, A.Column);
+            Q = new Matrix(A.Row, A.Column);
             //начальная инициализация матрицы ортогональных преобразований
             for (int i = 0; i < A.Row; i++) Q.Elem[i][i] = 1.0;
 
@@ -40,22 +40,22 @@ namespace ComMethods
             {
                 case QRAlgorithm.Classic_Gram_Schmidt:
                     {
-                        GramSchmidt.Classic(A, out var Q, out var R);
+                        GramSchmidt.Classic(A, Q, R);
                         break;
                     }
                 case QRAlgorithm.Modified_Gram_Schmidt:
                     {
-                        GramSchmidt.Modified(A, out var Q, out var R);
+                        GramSchmidt.Modified(A, Q, R);
                         break;
                     }
                 case QRAlgorithm.Givens:
                     {
-                        Givens.Orthogon(A, out var Q, out var R);
+                        Givens.Orthogon(A, Q, R);
                         break;
                     }
                 case QRAlgorithm.Householder:
                     {
-                        Householder.Orthogon(A, out var Q, out var R);
+                        Householder.Orthogon(A, Q, R);
                         break;
                     }
             }
