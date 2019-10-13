@@ -158,9 +158,12 @@ namespace ComMethods
             Matrix res = new Matrix(Row, Column);
             
             for (int i = 0; i < Row; i++)
-                for (int j = 0; j < Column; j++)
+                for (int j = i; j < Column; j++)
+                {
                     res.Elem[i][j] = Elem[j][i];
-            
+                    res.Elem[j][i] = Elem[i][j];
+                }
+
             return res;
         }
 

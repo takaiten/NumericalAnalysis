@@ -12,7 +12,7 @@ namespace ComMethods
             try
             {
                 Matrix A = new Matrix("./SLE/");
-                Vector F = new Vector(Environment.CurrentDirectory.ToString() + "./SLE/");
+                Vector F = new Vector("./SLE/");
                 
                 int mu = 10000;
                 
