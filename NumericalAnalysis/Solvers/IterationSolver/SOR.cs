@@ -17,12 +17,15 @@ namespace ComMethods
 
         public Vector StartSolver(Matrix A, Vector F, double u)
         {
-            double normError, F_Ax;
+            this.Iter = 0;
+            
             Vector res = new Vector(F.Size);
             Vector resNew = new Vector(F.Size);
 
             for (int i = 0; i < F.Size; i++) 
                 res.Elem[i] = 0.0f; // не блочный, а точечный SOR
+
+            double normError, F_Ax;
 
             do
             {
@@ -49,7 +52,7 @@ namespace ComMethods
                 Iter++;
 //                Console.WriteLine($"Iter {Iter, -10} {normError}");
             } while (Iter < MaxIter && normError > Eps);
-            Console.WriteLine($"Iter {Iter}");
+//            Console.WriteLine($"Iter {Iter}");
             return res;
         }
     }

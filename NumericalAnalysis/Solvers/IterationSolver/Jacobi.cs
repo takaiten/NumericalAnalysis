@@ -42,7 +42,7 @@ namespace ComMethods
 //                Console.WriteLine($"Iter {Iter, -10} {normError}");
             } while (Iter < MaxIter && normError > Eps);
             
-            Console.WriteLine($"Iter {Iter}");
+//            Console.WriteLine($"Iter {Iter}");
             
             return res;
         }

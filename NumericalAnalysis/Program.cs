@@ -19,10 +19,10 @@ namespace ComMethods
                 
                 A.MultDiagByConst(mu);
                 
-                Console.WriteLine("Disturbance parameter: " + mu.ToString("g2"));
-                Console.WriteLine("Condition number: " + A.CondSquareMatrix().ToString("g2"));
+                Console.WriteLine($"Disturbance parameter {mu:g2}");
+                Console.WriteLine($"Condition number: {A.CondSquareMatrix():g2}");
 
-                int maxIter = 100;
+                int maxIter = 100000;
                 double eps = 1e-8;
 
                 Vector X = new Vector();
@@ -33,7 +33,7 @@ namespace ComMethods
                 });
                 
                 Console.WriteLine("\nGauss " + CONST.MeasureTime(GAUSS));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
 
                 Jacobi J = new Jacobi(maxIter, eps);
                 var JACOBI = new Action(() =>
@@ -42,7 +42,8 @@ namespace ComMethods
                 });
                 
                 Console.WriteLine("\nJacobi " + CONST.MeasureTime(JACOBI));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                Console.WriteLine($"Iterations: {J.Iter}");
+                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
                 
                 SOR S = new SOR(maxIter, eps);
                 var GAUSS_SEIDEL = new Action(() =>
@@ -51,7 +52,8 @@ namespace ComMethods
                 });
                 
                 Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GAUSS_SEIDEL));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                Console.WriteLine($"Iterations: {S.Iter}");
+                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
 
                 var RELAXATION = new Action(() =>
                 {
@@ -59,7 +61,8 @@ namespace ComMethods
                 });
                 
                 Console.WriteLine("\nSOR " + CONST.MeasureTime(RELAXATION));
-                Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
+                Console.WriteLine($"Iterations: {S.Iter}");
+                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
             }
             catch (Exception e)
             {
