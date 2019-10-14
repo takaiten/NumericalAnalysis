@@ -451,22 +451,25 @@ namespace UnitTest
             var A = new Matrix(path);
             var F = new Vector(path);
 
+            double mul = Math.Pow(10, -2);
+            A.MultDiagByConst(mul);
+            
             int maxIter = 100000;
             double eps = 1e-8;
             
             var jacobi = new Jacobi(maxIter, eps);
-            var gaussSeidel = new SOR(maxIter, eps);
-            var sor = new SOR(maxIter, eps);
+//            var gaussSeidel = new SOR(maxIter, eps);
+//            var sor = new SOR(maxIter, eps);
 
             // Act
             var j = jacobi.StartSolver(A, F);
-            var gs = gaussSeidel.StartSolver(A, F, 1);
-            var s = sor.StartSolver(A, F, 1.851); // 1.851 for System3 is the best 
+//            var gs = gaussSeidel.StartSolver(A, F, 1);
+//            var s = sor.StartSolver(A, F, 1); // 1.851 for System3 is the best 
             
             // Assert
             Assert.That(A * j == F);
-            Assert.That(A * gs == F);
-            Assert.That(A * s == F);
+//            Assert.That(A * gs == F);
+//            Assert.That(A * s == F);
         }
     }
 }

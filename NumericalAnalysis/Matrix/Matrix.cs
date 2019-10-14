@@ -99,7 +99,7 @@ namespace ComMethods
                 Elem[i][column] *= c;
         }
 
-        public void MultDiagByConst(int c)
+        public void MultDiagByConst(double c)
         {
             if (Row == Column)
                 for (int i = 0; i < Row; i++)
