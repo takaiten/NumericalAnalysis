@@ -1,6 +1,8 @@
 using System;
+using System.Reflection;
 using ComMethods;
 using NUnit.Framework;
+using ComMethods_Jacobi = ComMethods.Jacobi;
 
 namespace UnitTest
 {
@@ -444,12 +446,43 @@ namespace UnitTest
         [TestCase(Author = "Oleg")]
         public void When_Test_Jacobi()
         {
-            // Arrange
-            string path = "../Systems/System3";
-            Matrix A = new Matrix(path);
-            Vector F = new Vector(path);
+//            // Arrange
+//            string path = "./../../../../Systems/System3/"; // Bruh path
+//            var A = new Matrix(path);
+//            var F = new Vector(path);
+//            
+//            // Act
+//            var j = new Jacobi(100, 1e-8);
+//            var X = j.StartSolver(A, F);
+//            
+//            // Assert
+//            Assert.That(A * X == F);
+
+            Matrix A = new Matrix(3, 3);
+            A.Elem[0][0] = 4;
+            A.Elem[0][1] = -1;
+            A.Elem[0][2] = -1;
+
+            A.Elem[1][0] = 1;
+            A.Elem[1][1] = 5;
+            A.Elem[1][2] = -2;
+        
+            A.Elem[2][0] = 1;
+            A.Elem[2][1] = 1;
+            A.Elem[2][2] = 4;
+
+            Vector F = new Vector(3);
+            F.Elem[0] = 2;
+            F.Elem[1] = 4;
+            F.Elem[2] = 6;
             
+            // Act
+            var j = new Jacobi(100, 1e-9);
             var sor = new SOR(100, 1e-8);
+            var gaussSeidel = j.StartSolver(A, F);
+            
+            // Assert
+            Assert.That(A * gaussSeidel == F);
         }
     }
 }

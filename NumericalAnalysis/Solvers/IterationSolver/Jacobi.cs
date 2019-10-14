@@ -10,32 +10,36 @@ namespace ComMethods
 
         public Vector StartSolver(Matrix A, Vector F)
         {
-            double normError, F_Ax;
             Vector res = new Vector(F.Size);
             Vector resNew = new Vector(F.Size);
 
             for (int i = 0; i < F.Size; i++) 
-                res.Elem[i] = 0.0f; // не блочный, а точечный SOR
+                res.Elem[i] = F.Elem[i] / A.Elem[i][i];
+
+            double normError;
 
             do
             {
-                normError = 0;
+                if (Iter > 1)
+                    res.Copy(resNew);
+                
+                normError = 0.0;
                 for (int i = 0; i < F.Size; i++)
                 {
-                    F_Ax = F.Elem[i];
-                    for (int j = 0; j < i; j++) 
-                        F_Ax -= A.Elem[i][j] * resNew.Elem[j];
-                    for (int j = i + 1; j < F.Size; j++) 
-                        F_Ax -= A.Elem[i][j] * res.Elem[j];
-
-                    resNew.Elem[i] = F_Ax / A.Elem[i][i];
+                    resNew.Elem[i] = F.Elem[i];
+                    for (int j = 0; j < F.Size; j++) 
+                        if (i != j)
+                            resNew.Elem[i] -= A.Elem[i][j] * res.Elem[j];
+                    
+                    
+                    resNew.Elem[i] /= A.Elem[i][i];
                     normError += Math.Pow(res.Elem[i] - resNew.Elem[i], 2);
                 }
 
-                res.Copy(resNew);
                 normError = Math.Sqrt(normError);
                 Iter++;
-                Console.WriteLine("Iter {0, -10} {1}", Iter, normError);
+                
+                Console.WriteLine($"Iter {Iter, -10} {normError}");
             } while (Iter < MaxIter && normError > Eps);
 
             return res;

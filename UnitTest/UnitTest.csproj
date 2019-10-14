@@ -35,6 +35,15 @@
       <Compile Include="..\NumericalAnalysis\Solvers\DirectSolvers\Substitution.cs">
         <Link>Solvers\DirectSolvers\Substitution.cs</Link>
       </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\IterationSolver\IteratorSolver.cs">
+        <Link>Solvers\IterationSolver\IteratorSolver.cs</Link>
+      </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\IterationSolver\Jacobi.cs">
+        <Link>Solvers\IterationSolver\Jacobi.cs</Link>
+      </Compile>
+      <Compile Include="..\NumericalAnalysis\Solvers\IterationSolver\SOR.cs">
+        <Link>Solvers\IterationSolver\SOR.cs</Link>
+      </Compile>
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Givens.cs">
         <Link>Solvers\OrthogonalSolvers\Givens.cs</Link>
       </Compile>
@@ -44,7 +53,7 @@
       <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\Householder.cs">
         <Link>Solvers\OrthogonalSolvers\Householder.cs</Link>
       </Compile>
-	  <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\QRDecomposition.cs">
+      <Compile Include="..\NumericalAnalysis\Solvers\OrthogonalSolvers\QRDecomposition.cs">
         <Link>Solvers\OrthogonalSolvers\QRDecomposition.cs</Link>
       </Compile>
       <Compile Include="..\NumericalAnalysis\Vector\Vector.cs">

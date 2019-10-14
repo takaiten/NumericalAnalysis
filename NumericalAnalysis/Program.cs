@@ -11,8 +11,9 @@ namespace ComMethods
         {
             try
             {
-                Matrix A = new Matrix("./SLE/");
-                Vector F = new Vector("./SLE/");
+                string path = "./../../../../Systems/System3/";
+                Matrix A = new Matrix(path);
+                Vector F = new Vector(path);
                 
                 int mu = 10000;
                 
@@ -44,12 +45,12 @@ namespace ComMethods
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
                 
                 SOR S = new SOR(maxIter, eps);
-                var GaussSeidel = new Action(() =>
+                var GAUSS_SEIDEL = new Action(() =>
                 {
                     X = S.StartSolver(A, F, 1);
                 });
                 
-                Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GaussSeidel));
+                Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GAUSS_SEIDEL));
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
 
                 double relaxParam = 2 / (1 + Math.Sqrt(1 - Math.Pow(A.Spectrum(), 2)));
