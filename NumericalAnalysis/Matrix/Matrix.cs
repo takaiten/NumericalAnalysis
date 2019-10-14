@@ -124,17 +124,6 @@ namespace ComMethods
             return rowNum;
         }
 
-        public double Spectrum()
-        {
-            double spectr = 0;
-            
-            for (int i = 0; i < Row; i++)
-                for (int j = 0; j < Column; j++)
-                    spectr = spectr < Math.Abs(Elem[i][j]) ? Math.Abs(Elem[i][j]) : spectr;
-
-            return spectr;
-        }
-        
         public void SwitchRows(int r1, int r2)
         {
             if (r1 >= Row || r1 < 0 || r2 >= Row || r2 < 0)

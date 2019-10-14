@@ -53,11 +53,9 @@ namespace ComMethods
                 Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GAUSS_SEIDEL));
                 Console.WriteLine("Discrepancy: " + CONST.RelativeDiscrepancy(A, X, F).ToString("g2"));
 
-                double relaxParam = 2 / (1 + Math.Sqrt(1 - Math.Pow(A.Spectrum(), 2)));
-                
                 var RELAXATION = new Action(() =>
                 {
-                    X = S.StartSolver(A, F, relaxParam);
+                    X = S.StartSolver(A, F, 1.851);
                 });
                 
                 Console.WriteLine("\nSOR " + CONST.MeasureTime(RELAXATION));

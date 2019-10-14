@@ -446,43 +446,27 @@ namespace UnitTest
         [TestCase(Author = "Oleg")]
         public void When_Test_Jacobi()
         {
-//            // Arrange
-//            string path = "./../../../../Systems/System3/"; // Bruh path
-//            var A = new Matrix(path);
-//            var F = new Vector(path);
-//            
-//            // Act
-//            var j = new Jacobi(100, 1e-8);
-//            var X = j.StartSolver(A, F);
-//            
-//            // Assert
-//            Assert.That(A * X == F);
+            // Arrange
+            string path = "./../../../../Systems/System3/";
+            var A = new Matrix(path);
+            var F = new Vector(path);
 
-            Matrix A = new Matrix(3, 3);
-            A.Elem[0][0] = 4;
-            A.Elem[0][1] = -1;
-            A.Elem[0][2] = -1;
-
-            A.Elem[1][0] = 1;
-            A.Elem[1][1] = 5;
-            A.Elem[1][2] = -2;
-        
-            A.Elem[2][0] = 1;
-            A.Elem[2][1] = 1;
-            A.Elem[2][2] = 4;
-
-            Vector F = new Vector(3);
-            F.Elem[0] = 2;
-            F.Elem[1] = 4;
-            F.Elem[2] = 6;
+            int maxIter = 100000;
+            double eps = 1e-8;
             
+            var jacobi = new Jacobi(maxIter, eps);
+            var gaussSeidel = new SOR(maxIter, eps);
+            var sor = new SOR(maxIter, eps);
+
             // Act
-            var j = new Jacobi(100, 1e-9);
-            var sor = new SOR(100, 1e-8);
-            var gaussSeidel = j.StartSolver(A, F);
+            var j = jacobi.StartSolver(A, F);
+            var gs = gaussSeidel.StartSolver(A, F, 1);
+            var s = sor.StartSolver(A, F, 1.851); // 1.851 for System3 is the best 
             
             // Assert
-            Assert.That(A * gaussSeidel == F);
+            Assert.That(A * j == F);
+            Assert.That(A * gs == F);
+            Assert.That(A * s == F);
         }
     }
 }

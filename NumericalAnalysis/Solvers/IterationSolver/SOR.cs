@@ -47,9 +47,9 @@ namespace ComMethods
                 res.Copy(resNew);
                 normError = Math.Sqrt(normError);
                 Iter++;
-                Console.WriteLine($"Iter {Iter, -10} {normError}");
+//                Console.WriteLine($"Iter {Iter, -10} {normError}");
             } while (Iter < MaxIter && normError > Eps);
-
+            Console.WriteLine($"Iter {Iter}");
             return res;
         }
     }
