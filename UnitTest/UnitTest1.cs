@@ -459,37 +459,5 @@ namespace UnitTest
             
             Assert.True(true);
         }
-        
-        [TestCase(Author = "Oleg")]
-        public void When_Test_Jacobi()
-        {
-            // Arrange
-            string path = "./../../../../Systems/System3/";
-            var A = new Matrix(path);
-            var F = new Vector(path);
-
-//            A.MultDiagByConst(Math.Pow(10, -2));
-            A.MultDiagByConst(0.1);
-
-            int maxIter = 100000;
-            double eps = 1e-8;
-            
-            var jacobi = new Jacobi(maxIter, eps);
-            var gaussSeidel = new SOR(maxIter, eps);
-//            var sor = new SOR(maxIter, eps);
-
-            // Act
-            var j = jacobi.StartSolver(A, F);
-            var gs = gaussSeidel.StartSolver(A, F, 1);
-            
-            Console.WriteLine($"Jacobi: {jacobi.Iter}");
-            Console.WriteLine($"Gauss-Seidel: {gaussSeidel.Iter}");
-//            var s = sor.StartSolver(A, F, 1.851); // 1.851 for System3 is the best 
-            
-            // Assert
-            Assert.That(A * j == F);
-            Assert.That(A * gs == F);
-//            Assert.That(A * s == F);
-        }
     }
 }
