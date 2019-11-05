@@ -353,7 +353,7 @@ namespace UnitTest
         }
     }
 
-    [TestFixture(Author = "Oleg")]
+    [TestFixture(Ignore = "Outdated")]
     public class OrthogonalSolvers
     {
         [TestCase(3)]
@@ -443,6 +443,23 @@ namespace UnitTest
     [TestFixture]
     public class IterationSolvers
     {
+        [TestCase(Description = "Homework")]
+        public void MFW_HW()
+        {
+            var A = new Matrix(4, 4);
+            A.Elem[0][0] = 5; A.Elem[0][1] = 20; A.Elem[0][2] = 49; A.Elem[0][3] = 4; 
+            A.Elem[1][0] = 55; A.Elem[1][1] = 17; A.Elem[1][2] = 12; A.Elem[1][3] = 19; 
+            A.Elem[2][0] = 0; A.Elem[2][1] = 11; A.Elem[2][2] = 47; A.Elem[2][3] = 61; 
+            A.Elem[3][0] = 48; A.Elem[3][1] = 60; A.Elem[3][2] = 9; A.Elem[3][3] = 70; 
+            
+            var F = new Vector(4);
+            for (int i = 0; i < 4; i++) F.Elem[i] = 1;
+
+            Householder.StartSolverQR(A, F);
+            
+            Assert.True(true);
+        }
+        
         [TestCase(Author = "Oleg")]
         public void When_Test_Jacobi()
         {
@@ -451,22 +468,28 @@ namespace UnitTest
             var A = new Matrix(path);
             var F = new Vector(path);
 
+//            A.MultDiagByConst(Math.Pow(10, -2));
+            A.MultDiagByConst(0.1);
+
             int maxIter = 100000;
             double eps = 1e-8;
             
             var jacobi = new Jacobi(maxIter, eps);
             var gaussSeidel = new SOR(maxIter, eps);
-            var sor = new SOR(maxIter, eps);
+//            var sor = new SOR(maxIter, eps);
 
             // Act
             var j = jacobi.StartSolver(A, F);
             var gs = gaussSeidel.StartSolver(A, F, 1);
-            var s = sor.StartSolver(A, F, 1.851); // 1.851 for System3 is the best 
+            
+            Console.WriteLine($"Jacobi: {jacobi.Iter}");
+            Console.WriteLine($"Gauss-Seidel: {gaussSeidel.Iter}");
+//            var s = sor.StartSolver(A, F, 1.851); // 1.851 for System3 is the best 
             
             // Assert
             Assert.That(A * j == F);
             Assert.That(A * gs == F);
-            Assert.That(A * s == F);
+//            Assert.That(A * s == F);
         }
     }
 }

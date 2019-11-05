@@ -6,12 +6,24 @@ using System.Threading.Tasks;
 
 namespace ComMethods
 {
-    class CSlRMatrix : IMatrix
+    public interface ISparseMatrix
+    {
+        int Row { set; get; }
+        int Column { set; get; }
+        void MultMV(Vector X, Vector Y);
+        void MultMtV(Vector X, Vector Y);
+        void SlauL(Vector X, Vector F);
+        void SlauLt(Vector X, Vector F);
+        void SlauU(Vector X, Vector F);
+        void SlauUt(Vector X, Vector F);
+    }
+    
+    class CSlRMatrix : ISparseMatrix
     {
         //размер матрицы
-        public int Row { private set; get; }
+        public int Row { set; get; }
 
-        public int Column { private set; get; }
+        public int Column { set; get; }
 
         //диагональ матрицы
         public double[] di { set; get; }
@@ -94,7 +106,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //умножение матрицы на вектор A*x = y
-        public void Mult_MV(Vector X, Vector Y)
+        public void MultMV(Vector X, Vector Y)
         {
             for (int i = 0; i < Column; i++) Y.Elem[i] = X.Elem[i] * di[i];
             for (int i = 0; i < Column; i++)
@@ -108,7 +120,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //умножение транспонированной матрицы на вектор A*x = y
-        public void Mult_MtV(Vector X, Vector Y)
+        public void MultMtV(Vector X, Vector Y)
         {
             for (int i = 0; i < Column; i++) Y.Elem[i] = X.Elem[i] * di[i];
             for (int i = 0; i < Column; i++)
@@ -122,7 +134,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //решение СЛАУ Lx = F с нижней треугольной матрицей
-        public void Slau_L(Vector X, Vector F)
+        public void SlauL(Vector X, Vector F)
         {
             for (int i = 0; i < Column; i++)
             {
@@ -136,7 +148,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //решение СЛАУ L_t(x) = F с нижней треугольной транспонированной матрицей
-        public void Slau_Lt(Vector X, Vector F)
+        public void SlauLt(Vector X, Vector F)
         {
             double[] v = new double[Column];
             for (int i = 0; i < Column; i++) v[i] = F.Elem[i];
@@ -151,7 +163,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //решение СЛАУ Ux = F с верхней треугольной матрицей
-        public void Slau_U(Vector X, Vector F)
+        public void SlauU(Vector X, Vector F)
         {
             for (int i = 0; i < Column; i++) X.Elem[i] = F.Elem[i];
             for (int i = Column - 1; i >= 0; i--)
@@ -166,7 +178,7 @@ namespace ComMethods
         //-------------------------------------------------------------------------------------------------
 
         //решение СЛАУ (U_t)x = F с верхней треугольной транспонированной матрицей
-        public void Slau_Ut(Vector X, Vector F)
+        public void SlauUt(Vector X, Vector F)
         {
             for (int i = 0; i < Column; i++)
             {
