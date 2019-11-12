@@ -7,7 +7,7 @@ namespace ComMethods
 {
     class LUDecomposition
     {
-        private Matrix LU { set; get; }
+        public Matrix LU { set; get; }
         private int _n;
         private double _sum;
 
