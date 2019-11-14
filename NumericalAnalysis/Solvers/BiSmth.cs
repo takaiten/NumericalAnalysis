@@ -1,6 +1,6 @@
 using System.ComponentModel.Design;
 
-namespace ComMethods.Solvers
+namespace ComMethods
 {
     public class BiSmth
     {

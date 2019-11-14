@@ -5,7 +5,7 @@ namespace ComMethods
     public abstract class Preconditioner
     {
         public abstract void StartPreconditioner(Vector x, Vector res);
-        public abstract void StartTvPreconditioner(Vector x, Vector res);
+        public abstract void StartTrPreconditioner(Vector x, Vector res);
         public enum PreconditionerType
         {
             Diagonal = 1,
@@ -25,7 +25,7 @@ namespace ComMethods
                 res.Elem[i] = x.Elem[i] / diag.Elem[i];
             }
         }
-        public override void StartTvPreconditioner(Vector x, Vector res)
+        public override void StartTrPreconditioner(Vector x, Vector res)
         { StartPreconditioner(x, res); }
         
         public DiagonalPreconditioner(Matrix A)
@@ -37,17 +37,21 @@ namespace ComMethods
     }
     class IncompleteLUPreconditioner : Preconditioner
     {
-        private Matrix LU { get; }
+        private CSlRMatrix ILU { get; }
         public override void StartPreconditioner(Vector x, Vector res)
         {
-            
+            ILU.SlauL(res, x);
+            ILU.SlauU(res, res);
         }
-        public override void StartTvPreconditioner(Vector x, Vector res)
-        { StartPreconditioner(x, res); }
-        public IncompleteLUPreconditioner(Matrix A)
+
+        public override void StartTrPreconditioner(Vector x, Vector res)
         {
-            LUDecomposition LUDecomp = new LUDecomposition(A);
-            LU = LUDecomp.LU;
+            ILU.SlauUt(res, x);
+            ILU.SlauLt(res, res);
+        }
+        public IncompleteLUPreconditioner(CSlRMatrix A)
+        {
+            ILU = A.ILU_CSlR();
         }
     }
 }
