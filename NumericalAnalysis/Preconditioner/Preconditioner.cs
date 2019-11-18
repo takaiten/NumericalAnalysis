@@ -28,11 +28,11 @@ namespace ComMethods
         public override void StartTrPreconditioner(Vector x, Vector res)
         { StartPreconditioner(x, res); }
         
-        public DiagonalPreconditioner(Matrix A)
+        public DiagonalPreconditioner(CSlRMatrix A)
         {
             diag = new Vector(A.Row);
             for (int i = 0; i < A.Row; i++) 
-                diag.Elem[i] = A.Elem[i][i];
+                diag.Elem[i] = A.di[i];
         }
     }
     class IncompleteLUPreconditioner : Preconditioner
