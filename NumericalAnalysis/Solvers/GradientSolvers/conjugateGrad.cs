@@ -3,7 +3,7 @@ using System.ComponentModel.Design;
 
 namespace ComMethods
 {
-    class conjugateGrad
+    class conjugateGrad : IIteratorSolver
     {
         public int MaxIter { set; get; }
         public int Iter { set; get; }
