@@ -3,7 +3,7 @@ using System.ComponentModel.Design;
 
 namespace ComMethods
 {
-    class ConjugateGrad
+    class conjugateGrad
     {
         public int MaxIter { set; get; }
         public int Iter { set; get; }
@@ -11,7 +11,7 @@ namespace ComMethods
 
         public Preconditioner Preconditioner { set; get; }
 
-        public ConjugateGrad(int maxIter, double eps)
+        public conjugateGrad(int maxIter, double eps)
         {
             MaxIter = maxIter;
             Eps = eps;
@@ -63,9 +63,9 @@ namespace ComMethods
             // iterative process
             while (flag && Iter < MaxIter)
             {
-                sc1 = p * r; // (M^(-1) * r; r)
+                sc1 = p * r;       // (M^(-1) * r; r)
                 A.MultMtV(p, vec); // vec = A * p
-                sc2 = vec * p; // sc2 = (A * p; p)
+                sc2 = vec * p;     // sc2 = (A * p; p)
                 alpha = sc1 / sc2; // linear search coefficient
 
                 // result vector & residual
@@ -76,8 +76,8 @@ namespace ComMethods
                 }
 
                 Preconditioner.StartPreconditioner(r, vec); // vec := M^(-1) * r
-                sc2 = vec * r; // (M^(-1) * r; r)
-                beta = sc2 / sc1; // coefficient in choosing a search direction
+                sc2 = vec * r;      // (M^(-1) * r; r)
+                beta = sc2 / sc1;   // coefficient in choosing a search direction
                 rNorm = r.Normal(); // residual norm
 
                 if (rNorm < Eps)

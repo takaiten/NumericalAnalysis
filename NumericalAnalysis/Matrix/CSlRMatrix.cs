@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ComMethods
 {
@@ -66,7 +67,8 @@ namespace ComMethods
                 for (int i = 0; i < Column; i++)
                 {
                     di[i] = Convert.ToDouble(
-                        reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                        reader.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0],
+                        new CultureInfo("en-US"));
                 }
             }
 
@@ -93,9 +95,11 @@ namespace ComMethods
                 jptr[i] = Convert.ToInt32(
                     reader1.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
                 altr[i] = Convert.ToDouble(
-                    reader2.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                    reader2.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0],
+                        new CultureInfo("en-US"));
                 autr[i] = Convert.ToDouble(
-                    reader3.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0]);
+                    reader3.ReadLine()?.Split(separator, StringSplitOptions.RemoveEmptyEntries)[0],
+                        new CultureInfo("en-US"));
             }
 
             reader1.Close();

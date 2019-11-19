@@ -11,58 +11,18 @@ namespace ComMethods
         {
             try
             {
-                string path = "./../../../../Systems/System3/";
-                Matrix A = new Matrix(path);
-                Vector F = new Vector(path);
-                
-                int mu = 1;
-                
-                A.MultDiagByConst(mu);
-                
-                Console.WriteLine($"Disturbance parameter {mu}");
-//                Console.WriteLine($"Condition number: {A.CondSquareMatrix():g2}");
-
-                int maxIter = 100000;
-                double eps = 1e-8;
-
-                Vector X = new Vector();
-                
-//                var GAUSS = new Action(() =>
-//                {
-//                    X = Gauss.StartSolver(A, F);
-//                });
-//                
-//                Console.WriteLine("\nGauss " + CONST.MeasureTime(GAUSS));
-//                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
-//
-//                Jacobi J = new Jacobi(maxIter, eps);
-//                var JACOBI = new Action(() =>
-//                {
-//                    X = J.StartSolver(A, F);
-//                });
-//                
-//                Console.WriteLine("\nJacobi " + CONST.MeasureTime(JACOBI));
-//                Console.WriteLine($"Iterations: {J.Iter}");
-//                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
-//                
-                SOR S = new SOR(maxIter, eps);
-//                var GAUSS_SEIDEL = new Action(() =>
-//                {
-//                    X = S.StartSolver(A, F, 1);
-//                });
-//                
-//                Console.WriteLine("\nGauss-Seidel " + CONST.MeasureTime(GAUSS_SEIDEL));
-//                Console.WriteLine($"Iterations: {S.Iter}");
-//                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
-
-                var RELAXATION = new Action(() =>
+                string path = "C:/Users/TEMP.NSTU.011/Downloads/NumericalAnalysis/CSIR_System/Systems1/SPD/";
+                var A = new CSlRMatrix(path);
+                var F = new Vector(A.Row);
+                var Xtrue = new Vector(A.Row);
+                for (int i = 0; i < A.Row; i++)
                 {
-                    X = S.StartSolver(A, F, 1.849);
-                });
-                
-                Console.WriteLine("\nSOR " + CONST.MeasureTime(RELAXATION));
-                Console.WriteLine($"Iterations: {S.Iter}");
-                Console.WriteLine($"Discrepancy: {CONST.RelativeDiscrepancy(A, X, F):g2}");
+                    Xtrue.Elem[i] = 1.0f;
+                }
+                A.MultMV(Xtrue, F);
+          
+                var conjGradSolver = new conjugateGrad(10000, CONST.EPS);
+                conjGradSolver.StartSolver(A, F, Preconditioner.PreconditionerType.Diagonal);
             }
             catch (Exception e)
             {

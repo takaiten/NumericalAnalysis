@@ -31,6 +31,29 @@ namespace ComMethods
                 Elem[i] = inp.Elem[i];
         }
 
+        public Vector(string path, bool isCSlR)
+        {
+            using (var reader = new StreamReader(File.Open(path + "Size.txt", FileMode.Open)))
+            {
+                try
+                {
+                    Size = Convert.ToInt32(reader.ReadLine());
+                }
+                catch { throw new Exception("Size.txt: file isn't correct"); }
+            }
+
+            using(var reader = new StreamReader(File.Open(path + "F.txt", FileMode.Open)))
+            {
+                try
+                {
+                    Elem = new double[Size];
+                    for (int i = 0; i < Size; i++)
+                        Elem[i] = Convert.ToDouble(reader.ReadLine());
+                }
+                catch { throw new Exception("F.txt: file isn't correct"); }
+            }
+        }
+
         public Vector(string Path)
         {
             using (var Reader = new BinaryReader(File.Open(Path + "Size.bin", FileMode.Open)))
