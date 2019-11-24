@@ -36,5 +36,14 @@ namespace ComMethods
                 q.Elem[i] -= f.Elem[i];
             return Math.Sqrt((q * q) / (f * f));
         }
+        
+        public static double RelativeDiscrepancy(CSlRMatrix A, Vector x, Vector f)
+        {
+            var q = new Vector(A.Row);
+            A.MultMtV(x, q);
+            for (int i = 0; i < x.Size; i++)
+                q.Elem[i] -= f.Elem[i];
+            return Math.Sqrt((q * q) / (f * f));
+        }
     }
 }

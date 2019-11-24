@@ -18,8 +18,8 @@ namespace ComMethods
         void SlauU(Vector X, Vector F);
         void SlauUt(Vector X, Vector F);
     }
-    
-    class CSlRMatrix : ISparseMatrix
+
+    public class CSlRMatrix : ISparseMatrix
     {
         //размер матрицы
         public int Row { set; get; }

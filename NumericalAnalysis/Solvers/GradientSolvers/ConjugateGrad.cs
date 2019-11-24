@@ -3,7 +3,7 @@ using System.ComponentModel.Design;
 
 namespace ComMethods
 {
-    class conjugateGrad : IIteratorSolver
+    class ConjugateGrad : IIteratorSolver
     {
         public int MaxIter { set; get; }
         public int Iter { set; get; }
@@ -11,7 +11,7 @@ namespace ComMethods
 
         public Preconditioner Preconditioner { set; get; }
 
-        public conjugateGrad(int maxIter, double eps)
+        public ConjugateGrad(int maxIter, double eps)
         {
             MaxIter = maxIter;
             Eps = eps;
@@ -37,9 +37,6 @@ namespace ComMethods
             int n = A.Row;
             var res = new Vector(n);
 
-            for (int i = 0; i < n; i++)
-                res.Elem[i] = 0.0;
-            
             // auxiliary vectors
             var r = new Vector(n);
             var p = new Vector(n);
@@ -88,8 +85,9 @@ namespace ComMethods
                         p.Elem[i] = vec.Elem[i] + beta * p.Elem[i];
                 Iter++;
 
-                Console.WriteLine("\n{0, -20} {1, 20:E}", Iter, rNorm);
+//                Console.WriteLine("\n{0, -20} {1, 20:E}", Iter, rNorm);
             }
+            Console.WriteLine("Iter: {0, -20} \nNorm: {1, 20:E}", Iter, rNorm);
 
             return res;
         }
