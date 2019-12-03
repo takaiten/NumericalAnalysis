@@ -13,8 +13,8 @@ namespace ComMethods
 
     public class Matrix : IMatrix
     {
-        public int Row { get; }
-        public int Column { get; }
+        public int Row { get; set; }
+        public int Column { get; set; }
         public double[][] Elem { get; set; }
 
         public Matrix()
@@ -280,6 +280,65 @@ namespace ComMethods
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Matrix) obj);
+        }
+
+        public void HessenbergMatrix(Matrix R)
+        {
+            //Matrix A = new Matrix(AOrig);
+
+            Vector w = new Vector(Row);
+            double beta, mu, s;
+
+            for (int i = 0; i < Column - 2; i++)
+            {
+                s = 0.0;
+
+                // ||x||^2 for nullify
+                for (int I = i + 1; I < Row; I++)
+                    s += Math.Pow(Elem[I][i], 2);
+
+                if (Math.Abs(s - Elem[i + 1][i] * Elem[i + 1][i]) > CONST.EPS)
+                {
+                    beta = Elem[i + 1][i] < 0 ? Math.Sqrt(s) : -Math.Sqrt(s);
+                    mu = 1.0 / beta / (beta - Elem[i + 1][i]);
+
+                    for (int I = 0; I < Row; I++)
+                    {
+                        w.Elem[I] = 0.0;
+                        if (I >= i + 1)
+                            w.Elem[I] = Elem[I][i];
+                    }
+
+                    w.Elem[i + 1] -= beta;
+
+                    // A = H * A
+                    for (int m = i; m < Column; m++)
+                    {
+                        s = 0;
+                        for (int n = i; n < Row; n++)
+                            s += Elem[n][m] * w.Elem[n];
+
+                        s *= mu;
+                        for (int n = i; n < Row; n++)
+                            Elem[n][m] -= s * w.Elem[n];
+                    }
+
+                    // A = H * A * H
+                    for (int m = 0; m < Row; m++)
+                    {
+                        s = 0;
+                        for (int n = 0; n < Row; n++)
+                            s += Elem[m][n] * w.Elem[n];
+
+                        s *= mu;
+                        for (int n = i; n < Row; n++)
+                            Elem[m][n] -= s * w.Elem[n];
+                    }
+
+                }
+            }
+
+            R.Elem = Elem;
         }
     }
 }

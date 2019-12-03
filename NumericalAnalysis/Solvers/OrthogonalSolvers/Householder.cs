@@ -6,12 +6,6 @@ namespace ComMethods
     {
         public static void Orthogon(Matrix AOrig, Matrix Q, Matrix R)   // Q = diag(1 .. 1)
         {
-
-//            Q = new Matrix(AOrig.Row, AOrig.Row);
-//            for (int i = 0; i < AOrig.Row; i++)
-//                Q.Elem[i][i] = 1;
-//            R = new Matrix(AOrig.Row, AOrig.Row);
-
             Matrix A = new Matrix(AOrig);
 
             Vector w = new Vector(A.Row);

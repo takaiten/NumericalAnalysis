@@ -10,8 +10,8 @@ namespace ComMethods
 
     public class Vector : IVector
     {
-        public int Size { get; }
-        public double[] Elem { get; }
+        public int Size { get; set; }
+        public double[] Elem { get; set; }
 
         public Vector()
         {
