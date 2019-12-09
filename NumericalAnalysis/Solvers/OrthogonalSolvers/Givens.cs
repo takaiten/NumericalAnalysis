@@ -8,11 +8,7 @@ namespace ComMethods
         {
             Matrix A = new Matrix(AOrig);
             int n = A.Row;
-//            Q = new Matrix(n, n);
-//            for (int i = 0; i < n; i++)
-//                Q.Elem[i][i] = 1;
-//            R = new Matrix(A.Row, A.Column);
-            
+
             double help1, help2;
             double c = 0, s = 0;
             

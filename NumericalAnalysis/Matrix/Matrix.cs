@@ -282,7 +282,7 @@ namespace ComMethods
             return Equals((Matrix) obj);
         }
 
-        public void HessenbergMatrix(Matrix R)
+        public void HessenbergMatrix()
         {
             //Matrix A = new Matrix(AOrig);
 
@@ -337,8 +337,33 @@ namespace ComMethods
 
                 }
             }
+        }
 
-            R.Elem = Elem;
+
+        public void ExcludeRowColumn(int n)
+        {
+            Matrix A = new Matrix(Row - 1, Column - 1);
+            for (int i = 0; i < A.Row; i++)
+            {
+                for (int j = 0; j < A.Column; j++)
+                {
+                    if (i < n && j < n)
+                        A.Elem[i][j] = Elem[i][j];
+
+                    if (i < n && j >= n)
+                        A.Elem[i][j] = Elem[i][j + 1];
+
+                    if (i >= n && j < n)
+                        A.Elem[i][j] = Elem[i + 1][j];
+
+                    if (i >= n && j >= n)
+                        A.Elem[i][j] = Elem[i + 1][j + 1];
+                }
+            }
+
+            Elem = A.Elem;
+            Row--;
+            Column--;
         }
     }
 }
