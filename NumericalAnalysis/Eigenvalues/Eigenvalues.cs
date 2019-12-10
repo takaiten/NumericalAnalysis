@@ -5,67 +5,66 @@ namespace ComMethods
 {
 	class Eigenvalues
 	{
-		public static List<double> GetEigenvalues(Matrix A, int IterNum)
+        double RayleighShift(Matrix A)
+        { return A.Elem[A.Row - 1][A.Column - 1]; }
+
+        double WilcoxonShift(Matrix A)
+        {
+            int N = A.Column - 1;
+            double a = A.Elem[A.Row - 2][A.Row - 2],
+                b = A.Elem[A.Row - 1][A.Row - 1],
+                c = A.Elem[A.Row - 1][A.Row - 2],
+                d = A.Elem[A.Row - 2][A.Row - 1];
+
+            double D = Math.Pow(a + b, 2) - 4 * (a * b - c * d);
+
+            if (D < 0)
+                throw new Exception("Matrix has a complex eigenvalue");
+
+            return 0.5 * ((a + b) + Math.Sqrt(D));
+        }
+
+
+        void Shift(Matrix A, double shift)
+        {
+            for (int i = 0; i < A.Row; i++)
+                A.Elem[i][i] += shift;
+        }
+
+		public List<double> GetEigenvalues(Matrix A, QRDecomposition.QRAlgorithm method)
 		{
-			List<double> eigenvalues = new List<double>();
-			List<double> diag = new List<double>();
-			
-			A.HessenbergMatrix();
-			
-			// only for Hessenberg matrix:
-			// if element of the lower diagonal = 0 (A[k + 1][k] == 0)
-			// then eigenvalue already found		(A[k][k] is eigenvalue)
-			List<int> toExclude = new List<int>();
-			for (int j = 0; j < A.Row - 1; j++)
-				if (Math.Abs(A.Elem[j + 1][j]) <= CONST.EPS)
-				{
-					eigenvalues.Add(A.Elem[j][j]);
-					toExclude.Add(j);
-				}
+            var eigenvalues = new List<double>();
+            int iter = 0;
 
-			// exclude excess rows and columns
-			for (int j = 0; j < toExclude.Count; j++)
-				A.ExcludeRowColumn(toExclude[j] - j);
+            while (A.Row != 1)
+            {
+                iter++;
+                for (int i = A.Row - 1; i > 0; i--)
+                    if (Math.Abs(A.Elem[i][i - 1]) < 1e-6)
+                    {
+                        eigenvalues.Add(A.Elem[i][i]);
+                        A.ExcludeRowColumn(i);
+                        i = A.Row;
+                    }
 
-			// get diagonal of matrix A
-			for (int i = 0; i < A.Row; i++)
-				diag.Add(A.Elem[i][i]);
-			
-			// find eigenvalues
-			for (int i = 0; i < IterNum; i++)
-			{
-				if (A.Row == 0)
-					break;
-				
-				QRDecomposition QR = new QRDecomposition(A, QRDecomposition.QRAlgorithm.Givens);
-				A = QR.R * QR.Q;
-				
-				// if the diagonal element hasn't changed
-				// then this element is an eigenvalue
-				toExclude.Clear();
-				for (int j = 0; j < A.Row; j++)
-				{
-					if (Math.Abs(A.Elem[j][j] - diag[j]) <= CONST.EPS)
-					{
-						eigenvalues.Add(A.Elem[j][j]);
-						toExclude.Add(j);
-					}
+                if (A.Row == 1)
+                    break;
 
-					diag[j] = A.Elem[j][j];
-				}
-				
-				// exclude excess rows and columns
-				for (int j = 0; j < toExclude.Count; j++)
-				{
-					A.ExcludeRowColumn(toExclude[j] - j);
-					diag.RemoveAt(toExclude[j] - j);
-				}
-			}
-			
-			for (int i = 0; i < A.Row; i++)
-				eigenvalues.Add(A.Elem[i][i]);
+                double shift = WilcoxonShift(A);
+                Shift(A, -shift);
 
-			return eigenvalues;
-		}
-	}
+                QRDecomposition QR = new QRDecomposition(A, method);
+                A = QR.R * QR.Q;
+                Shift(A, shift);
+            }
+
+            Console.WriteLine("Iter = " + iter.ToString() + "\n");
+
+            eigenvalues.Add(A.Elem[0][0]);
+            eigenvalues.Sort();
+            eigenvalues.Reverse();
+
+            return eigenvalues;
+        }
+    }
 }

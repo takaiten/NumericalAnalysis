@@ -342,26 +342,12 @@ namespace ComMethods
 
         public void ExcludeRowColumn(int n)
         {
-            Matrix A = new Matrix(Row - 1, Column - 1);
-            for (int i = 0; i < A.Row; i++)
+            for (int i = n; i < Row - 1; i++)
             {
-                for (int j = 0; j < A.Column; j++)
-                {
-                    if (i < n && j < n)
-                        A.Elem[i][j] = Elem[i][j];
-
-                    if (i < n && j >= n)
-                        A.Elem[i][j] = Elem[i][j + 1];
-
-                    if (i >= n && j < n)
-                        A.Elem[i][j] = Elem[i + 1][j];
-
-                    if (i >= n && j >= n)
-                        A.Elem[i][j] = Elem[i + 1][j + 1];
-                }
+                Elem[i] = Elem[i + 1];
+                for (int j = n; j < Column - 1; j++)
+                    Elem[i][j] = Elem[i][j + 1];
             }
-
-            Elem = A.Elem;
             Row--;
             Column--;
         }

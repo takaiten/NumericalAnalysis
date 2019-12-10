@@ -12,19 +12,24 @@ namespace ComMethods
 //            var ExcelRW = new Excel_Reader_Writer("Data\\Matrix.xlsx");
             
             Matrix A = new Matrix(3, 3);
-            A.Elem[0][0] = 10;
-            A.Elem[0][1] = 1;
-            A.Elem[0][2] = 1;
+            A.Elem[0][0] = 1;
+            A.Elem[0][1] = 2;
+            A.Elem[0][2] = 3;
 
-            A.Elem[1][0] = 1;
-            A.Elem[1][1] = 1;
-            A.Elem[1][2] = -1;
-        
-            A.Elem[2][0] = 2;
-            A.Elem[2][1] = -1;
-            A.Elem[2][2] = 0;
-          
-            var eigenvalues = Eigenvalues.GetEigenvalues(A, 10);
+            A.Elem[1][0] = 2;
+            A.Elem[1][1] = 2;
+            A.Elem[1][2] = 1;
+
+            A.Elem[2][0] = 3;
+            A.Elem[2][1] = 1;
+            A.Elem[2][2] = 3;
+
+            A.HessenbergMatrix();
+            var Pr = new Eigenvalues();
+            var eigenvalues = Pr.GetEigenvalues(A, QRDecomposition.QRAlgorithm.Givens);
+
+            foreach (var el in eigenvalues)
+                Console.WriteLine(el);
         }
     }
 }
