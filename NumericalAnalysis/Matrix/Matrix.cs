@@ -75,15 +75,11 @@ namespace ComMethods
         // Methods 
         public void Print()
         {
-            for (int i = 0; i < Column; i++)
+            for (int i = 0; i < Row; i++)
             {
-                for (int j = 0; j < Row; j++)
-                {
-                    Console.Write(Elem[i][j]);
-                    Console.Write('\t');
-                }
-
-                Console.Write('\n');
+                for (int j = 0; j < Column; j++)
+                    Console.Write(String.Format("{0, -22}", Elem[i][j].ToString("E5")));
+                Console.WriteLine();
             }
         }
 
@@ -280,6 +276,46 @@ namespace ComMethods
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((Matrix) obj);
+        }
+
+        //поиск номера наибольшей строки матрицы по квадрату евклидовой нормы
+        public int NumberRowWithMaxNorm(out double maxSqrRowNorm)
+        {
+            //проверка на наличие элементов в матрице
+            if (Row == 0 || Column == 0) throw new Exception("Error in NumberRowWithMaxNorm: Row = Column = 0 ...");
+            //номер строки с наибольшей нормой
+            int num = 1;
+            maxSqrRowNorm = 0.0;
+
+            //в цикле по оставшимся строкам ищём наибольшую 
+            for (int row = 0; row < Row; row++)
+            {
+                //находим квадрат нормы очередной строки
+                double sqrRowNorm = 0.0;
+                for (int i = 0; i < Column; i++) sqrRowNorm += Math.Pow(Elem[row][i], 2);
+                if (sqrRowNorm > maxSqrRowNorm) { maxSqrRowNorm = sqrRowNorm; num = row + 1; }
+            }
+            return num;
+        }
+
+        //поиск номера наибольшего столбца матрицы по квадрату евклидовой нормы
+        public int NumberColumnWithMaxNorm(out double maxSqrColumnNorm)
+        {
+            //проверка на наличие элементов в матрице
+            if (Row == 0 || Column == 0) throw new Exception("Error in NumberColumnWithMaxNorm: Row = Column = 0 ...");
+            //номер строки с наибольшей нормой
+            int num = 1;
+            maxSqrColumnNorm = 0.0;
+
+            //в цикле по оставшимся строкам ищём наибольшую 
+            for (int column = 0; column < Column; column++)
+            {
+                //находим квадрат нормы столбца
+                double sqrColumnNorm = 0.0;
+                for (int i = 0; i < Row; i++) sqrColumnNorm += Math.Pow(Elem[i][column], 2);
+                if (sqrColumnNorm > maxSqrColumnNorm) { maxSqrColumnNorm = sqrColumnNorm; num = column + 1; }
+            }
+            return num;
         }
 
         public void HessenbergMatrix()
